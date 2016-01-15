@@ -432,18 +432,18 @@ namespace FlowSimulator
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            canvas.CreateUndo(ActionType.Delete, canvas.GetComponent(mousepoint));
-            canvas.DeletePipeline(mousepoint);
+            canvas.CreateUndo(ActionType.Delete, canvas.SelectComponent(mousepoint));
+            canvas.DeletePipeline((Pipeline)canvas.SelectComponent(mousepoint));
             isSelected = false;
             this.Refresh();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            canvas.CreateUndo(ActionType.Delete, canvas.GetComponent(mousepoint));
-            if (true)
+            canvas.CreateUndo(ActionType.Delete, canvas.SelectComponent(mousepoint));
+            if (canvas.SelectComponent(mousepoint) is Pipeline)
             {
-                canvas.DeletePipeline(mousepoint);
+                canvas.DeletePipeline((Pipeline)canvas.SelectComponent(mousepoint));
             }
             else
             {

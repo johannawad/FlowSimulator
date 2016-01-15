@@ -210,29 +210,55 @@ namespace FlowSimulator
         {
             //Rectangle tempMousePoint = new Rectangle(mouseClicked, new Size(1, 1));
 
-
+            Component wantedcomp = SelectComponent(mouseClicked);
             // removes all Components connected
-            foreach (Component comp in Components)
+            switch (wantedcomp.GetType())
             {
-
-                if (comp is Pipeline)
-                {
-
-
-                    if (comp.OutPut == SelectComponent(mouseClicked))
+                
+                case ComponentType.Pump:
+                    if (wantedcomp.OutPut!=null)
                     {
-                        DeletePipeline(((Pipeline)comp).OutPutPoint);
-
+                        DeletePipeline((Pipeline)wantedcomp.OutPut);
                     }
-                    else if (comp.InPut == SelectComponent(mouseClicked))
+                    
+                    break;
+                case ComponentType.Splitter:
+                    if (wantedcomp.InPut != null)
                     {
-                        DeletePipeline(((Pipeline)comp).InPutPoint);
-
-
+                        DeletePipeline((Pipeline)wantedcomp.InPut);
                     }
-                }
+                    if (wantedcomp.OutPutUp != null)
+                    {
+                        DeletePipeline((Pipeline)wantedcomp.OutPutUp);
+                    }
+                    if (wantedcomp.OutPutDown != null)
+                    {
+                        DeletePipeline((Pipeline)wantedcomp.OutPutDown);
+                    }
+                    break;
+                case ComponentType.Merger:
+                    if (wantedcomp.InPutUp != null)
+                    {
+                        DeletePipeline((Pipeline)wantedcomp.InPutUp);
+                    }
+                    if (wantedcomp.InPutDown != null)
+                    {
+                        DeletePipeline((Pipeline)wantedcomp.InPutUp);
+                    }
+                    if (wantedcomp.OutPut != null)
+                    {
+                        DeletePipeline((Pipeline)wantedcomp.OutPut);
+                    }
+                    break;
+                case ComponentType.Sink:
+                    if (wantedcomp.InPut != null)
+                    {
+                        DeletePipeline((Pipeline)wantedcomp.InPut);
+                    }
+                    break;
+                
             }
-            Components.Remove(SelectComponent(mouseClicked));
+            Components.Remove(wantedcomp);
         }
 
         public Pipeline findSplitterPipeline(Component InPut)
@@ -413,50 +439,48 @@ namespace FlowSimulator
         /// </summary>
         /// <param name="p">the coordinates</param>
         /// <returns></returns>
-        public Component GetComponent(Point p)
+       /* public Component GetComponent(Point p)
         {
+
             
-            foreach (Component comp in Components)
+            Rectangle temp = new Rectangle(p.X - 5, p.Y - 5, 10, 10);
+            foreach (Component c in Components)
             {
-                if (comp.Position == p)
+                if (c is Pipeline)
                 {
-                    return comp;
+                    Pipeline pipeline = ((Pipeline)c);
+                    if (DistanceFromPointToLine(p, pipeline.InPutPoint, pipeline.OutPutPoint) < 4)
+                    {
+                        return c;
+                    }
                 }
-               
+                //if (c.SelectionArea.Contains(point))
+                if (temp.IntersectsWith(c.SelectionArea))
+                {
+                    return c;
+                }
             }
             return null;
 
+           
+
 
         }
+        */
 
-
-        public void DeletePipeline(Point p)
+        public void DeletePipeline(Pipeline pipe)
         {
-            Pipeline tempPipe = (Pipeline)GetComponent(p);
-            /*foreach (Component comp in Components)
-            {
-                if (comp is Pipeline)
-                {
-
-
-                    if (DistanceFromPointToLine(p, ((Pipeline)comp).InPutPoint, ((Pipeline)comp).OutPutPoint) < 4)
-                    {
-                        tempPipe = (Pipeline)comp;
-                        break;
-                    }
-                }
-            }*/
-            CreateUndo(ActionType.Delete, tempPipe);
-            foreach (Component c in Components)
-            {
-                // delete connections
-                if (ReferenceEquals( tempPipe.InPut , c))
-                    ((Part)c).Disconnect(tempPipe);
-                if (ReferenceEquals( tempPipe.OutPut , c))
-                    ((Part)c).Disconnect(tempPipe);
-            }
             
-            Components.Remove(tempPipe);           //delete selected wire
+            
+            CreateUndo(ActionType.Delete, pipe);
+           
+                // delete connections
+               
+                    ((Part)pipe.InPut).Disconnect(pipe);
+       
+                    ((Part)pipe.OutPut).Disconnect(pipe);
+           
+            Components.Remove(pipe);           //delete selected wire
         }
 
 

@@ -106,3 +106,4 @@ C:\Users\Johanna\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug
 C:\Users\Johanna\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\bin\Debug\FlowSimulator.exe
 C:\Users\Johanna\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\bin\Debug\FlowSimulator.pdb
 C:\Users\Johanna\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.exe
+D:\SCHOOL\OOD\OOD2-GROUP-B\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.Help.resources
