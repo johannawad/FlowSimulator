@@ -441,7 +441,15 @@ namespace FlowSimulator
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             canvas.CreateUndo(ActionType.Delete, canvas.GetComponent(mousepoint));
-            canvas.DeleteComponent(mousepoint);
+            if (true)
+            {
+                canvas.DeletePipeline(mousepoint);
+            }
+            else
+            {
+                canvas.DeleteComponent(mousepoint);
+            }
+           
            
             isSelected = false;
             this.Refresh();
@@ -478,7 +486,7 @@ namespace FlowSimulator
             {
                 if (textBox1.Text != "")
                 {
-                    temp.CurrentFlow = Convert.ToInt32(textBox1.Text);
+                    temp.CurrentFlow = Convert.ToDouble(textBox1.Text);
                     flowLabel.Text = temp.Capacity + "(" + temp.CurrentFlow + ")";
                     if (temp.Capacity < temp.CurrentFlow)
                         flowLabel.ForeColor = Color.Red;

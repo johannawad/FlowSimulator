@@ -11,8 +11,8 @@ namespace FlowSimulator
     {
         //everything that was in component and was only used by the parts is now in parts
 
-       
-        
+
+        protected Image compImage, compImageNot, compIcon, compIconNot;
 
         /// <summary>
         /// sets the base for setting it's position

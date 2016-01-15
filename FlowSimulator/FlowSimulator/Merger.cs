@@ -8,9 +8,42 @@ namespace FlowSimulator
 {
     public class Merger : Part
     {  
-        private Image compImage, compImageNot, compIcon, compIconNot;
-        
-        
+       
+
+
+        /// <summary>
+        /// Determines the percentage through the first channel of the splitter
+        /// </summary>
+        public double PercentageUp { get; set; }
+
+        /// <summary>
+        /// The remainder from the PercentageUp
+        /// </summary>
+        public double PercentageDown { get; set; }
+
+        public override double CurrentFlow
+        {
+            get
+            {
+                double outflow = 0;
+                if (InPutUp != null)
+                {
+                    outflow += InPutUp.CurrentFlow;
+                }
+                if (InPutDown != null)
+                {
+                    outflow += InPutDown.CurrentFlow;
+                }
+                return outflow;
+            }
+
+            set
+            {
+                
+            }
+        }
+
+
         /// <summary>
         /// To establish a connection with a pipeline
         /// </summary>
@@ -51,19 +84,21 @@ namespace FlowSimulator
         /// <returns></returns>
         public int CheckConnectedNodes()
         {
+
+            int filledports = 0;
             if (!ReferenceEquals(OutPut,null))
             {
-                return 3;
+                filledports++;
             }
             if (!ReferenceEquals(InPutDown,null))
             {
-                return 2;
+                filledports++;
             }
             if (!ReferenceEquals(InPutUp,null))
             {
-                return 1;
+                filledports++;
             }
-            return 0;
+            return filledports;
         }
         public Merger(Point position): base(position)
         {

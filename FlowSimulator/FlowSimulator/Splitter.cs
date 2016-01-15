@@ -8,7 +8,7 @@ namespace FlowSimulator
 {
     public class Splitter : Part
     {
-        private Image compImage, compImageNot, compIcon, compIconNot;
+        
        
         /// <summary>
         /// Determines the percentage through the first channel of the splitter
@@ -20,29 +20,46 @@ namespace FlowSimulator
         /// </summary>
         public double PercentageDown { get; set; }
 
+        public override double CurrentFlow
+        {
+            get
+            {
+                if (InPut != null)
+                {
+                    return InPut.CurrentFlow;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+            set
+            {
+               
+            }
+        }
+
         /// <summary>
         /// returns a number of connected nodes
         /// </summary>
         /// <returns></returns>
         public int CheckConnectedNodes()
         {
-            
-
-
-
-                if (!ReferenceEquals(OutPutDown , null))
+           int  filledports=0;
+            if (!ReferenceEquals(OutPutDown , null))
                 {
-                    return 3;
-                }
+                filledports++;
+            }
                 if (!ReferenceEquals(OutPutUp,null))
                 {
-                    return 2;
-                }
+                filledports++;
+            }
                 if (!ReferenceEquals(InPut,null))
                 {
-                    return 1;
-                }
-            return 0;
+                filledports++;
+            }
+            return filledports;
         }
 
         /// <summary>

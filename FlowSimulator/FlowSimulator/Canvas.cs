@@ -391,8 +391,8 @@ namespace FlowSimulator
 
         public void DeletePipeline(Point p)
         {
-            Pipeline tempPipe = null;
-            foreach (Component comp in Components)
+            Pipeline tempPipe = (Pipeline)GetComponent(p);
+            /*foreach (Component comp in Components)
             {
                 if (comp is Pipeline)
                 {
@@ -404,14 +404,14 @@ namespace FlowSimulator
                         break;
                     }
                 }
-            }
+            }*/
             CreateUndo(ActionType.Delete, tempPipe);
             foreach (Component c in Components)
             {
                 // delete connections
-                if (tempPipe.InPut == c)
+                if (ReferenceEquals( tempPipe.InPut , c))
                     ((Part)c).Disconnect(tempPipe);
-                if (tempPipe.OutPut == c)
+                if (ReferenceEquals( tempPipe.OutPut , c))
                     ((Part)c).Disconnect(tempPipe);
             }
             

@@ -8,11 +8,30 @@ namespace FlowSimulator
 {
     public class Sink : Part
     {
-        private Image compImage, compImageNot, compIcon, compIconNot;
+        
         /// <summary>
         /// The pipeline connected to the node of this pump
         /// </summary>
         public bool PipelineConnected = false;
+
+        public override double CurrentFlow
+        {
+            get
+            {
+                if (InPut != null)
+                {
+                    return InPut.CurrentFlow;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+             set { }
+            
+        }
+
         /// <summary>
         /// establishes a connection
         /// </summary>

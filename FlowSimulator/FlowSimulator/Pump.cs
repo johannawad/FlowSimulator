@@ -9,7 +9,7 @@ namespace FlowSimulator
     public class Pump : Part
         
     {
-        private Image compImage, compImageNot,compIcon, compIconNot;
+       
         /// <summary>
         /// The pipeline connected to the node of this pump
         /// </summary>
@@ -39,6 +39,20 @@ namespace FlowSimulator
 
         }
         public bool Input { get; set; }
+
+        public override double CurrentFlow
+        {
+            get
+            {
+                return currentflow;
+            }
+
+            set
+            {
+                currentflow = value;
+            }
+        }
+
         public override Image ComponentImage(bool isNotOccupied)
         {
             if (isNotOccupied)

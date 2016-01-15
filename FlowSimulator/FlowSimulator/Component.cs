@@ -15,7 +15,7 @@ namespace FlowSimulator
     public abstract class Component : ICloneable
     {
 
-        private double currentflow;
+        protected double currentflow;
         public Component InPut { get; set; }
         public Component InPutUp { get; set; }
         public Component InPutDown { get; set; }
@@ -23,20 +23,11 @@ namespace FlowSimulator
         public Component OutPutDown { get; set; }
         public Component OutPut { get; set; }
         public double Capacity { get; set; }
-        public double CurrentFlow { get
-            {
-                if (InPut != null)
-                { return InPut.CurrentFlow; }
-                else
-                {
-                    return currentflow;
-                }
-            }
-            set { if (InPut != null)
-                    { currentflow = InPut.CurrentFlow; }
-                else { currentflow = value; }
-                }
+        public abstract double CurrentFlow
+        {
+            get; set;
         }
+        
 
         /// <summary>
         /// The current position of the component on the canvas
