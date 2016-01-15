@@ -115,10 +115,7 @@ namespace FlowSimulator
         /// To remove an existing component from the canvas
         /// </summary>
         /// <param name="selectedComponent"></param>
-        public void RemoveComponent(Component selectedComponent)
-        {
-            throw new System.NotImplementedException();
-        }
+        
 
         /// <summary>
         /// To draw a rectangle around the selected component
@@ -209,9 +206,53 @@ namespace FlowSimulator
         /// To remove multiple selected components from the canvas
         /// </summary>
         /// <param name="selectedComponents"></param>
-        public void RemoveComponents(List<Component> selectedComponents)
+        public void DeleteComponent(Point mouseClicked)
         {
-            throw new System.NotImplementedException();
+            //Rectangle tempMousePoint = new Rectangle(mouseClicked, new Size(1, 1));
+
+
+            // removes all Components connected
+            foreach (Component comp in Components)
+            {
+
+                if (comp is Pipeline)
+                {
+
+
+                    if (comp.OutPut == SelectComponent(mouseClicked))
+                    {
+                        DeletePipeline(((Pipeline)comp).OutPutPoint);
+
+                    }
+                    else if (comp.InPut == SelectComponent(mouseClicked))
+                    {
+                        DeletePipeline(((Pipeline)comp).InPutPoint);
+
+
+                    }
+                }
+            }
+            Components.Remove(SelectComponent(mouseClicked));
+        }
+
+        public Pipeline findSplitterPipeline(Component InPut)
+        {
+            Pipeline pipeline = null;
+            foreach (Component comp in Components)
+            {
+                if (comp is Pipeline)
+                {
+                    pipeline = ((Pipeline)comp);
+
+                    if (pipeline != null)
+                    {
+                        if (pipeline.InPut == InPut)
+                            return SelectPipeline(new Point(InPut.Position.X + 40, InPut.Position.Y + 10));
+                        // temp = pipeline;
+                    }
+                }
+            }
+            return pipeline;
         }
 
         /// <summary>
@@ -419,53 +460,8 @@ namespace FlowSimulator
         }
 
 
-        public void DeleteComponent(Point mouseClicked)
-        {
-            //Rectangle tempMousePoint = new Rectangle(mouseClicked, new Size(1, 1));
-
-
-            // removes all Components connected
-            foreach (Component comp in Components)
-            {
-
-                if (comp is Pipeline)
-                {
-
-
-                    if (comp.OutPut == SelectComponent(mouseClicked))
-                    {
-                        DeletePipeline(((Pipeline)comp).OutPutPoint);
-
-                    }
-                    else if (comp.InPut == SelectComponent(mouseClicked))
-                    {
-                        DeletePipeline(((Pipeline)comp).InPutPoint);
-
-
-                    }
-                }
-            }
-            Components.Remove(SelectComponent(mouseClicked));
-        }
-        public Pipeline findSplitterPipeline(Component InPut)
-        {
-            Pipeline pipeline = null;
-            foreach (Component comp in Components)
-            {
-                if (comp is Pipeline)
-                {
-                    pipeline = ((Pipeline)comp);
-
-                    if (pipeline != null)
-                    {
-                        if (pipeline.InPut == InPut)
-                            return SelectPipeline(new Point(InPut.Position.X + 40, InPut.Position.Y + 10));
-                        // temp = pipeline;
-                    }
-                }
-            }
-            return pipeline;
-        }
+        
+     
         /*
         private bool isUpdated = false;
         public void UpdateProperties(Component updatedComponent)

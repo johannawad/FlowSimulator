@@ -125,7 +125,18 @@ namespace FlowSimulator
                         }
                         break;
                     case ComponentType.Merger:
-                        return new Point(InPut.Position.X + 40, InPut.Position.Y + 20);
+                        switch (((Part)InPut).WhichPort(this))
+                        {
+                            case Part.Port.InPutUp:
+                                return new Point(InPut.Position.X , InPut.Position.Y + 10);
+
+                            case Part.Port.InPutDown:
+                                return new Point(InPut.Position.X, InPut.Position.Y + 30);
+                             
+                            case Part.Port.OutPut:
+                                 return new Point(InPut.Position.X + 40, InPut.Position.Y + 20);
+                        }
+                        break;
                     case ComponentType.Sink:
                         return new Point(InPut.Position.X, InPut.Position.Y + 17);
 
@@ -178,17 +189,17 @@ namespace FlowSimulator
                 {
                     switch (((Part)InPut).WhichPort(this))
                     {
-                        
+
                         case Part.Port.OutPut:
                             return InPut.CurrentFlow;
-                        
+
                         case Part.Port.OutPutUp:
-                           return ( ((Splitter)InPut).PercentageUp * InPut.CurrentFlow);
+                            return (((Splitter)InPut).PercentageUp * InPut.CurrentFlow);
                         case Part.Port.OutPutDown:
                             return (((Splitter)InPut).PercentageDown * InPut.CurrentFlow);
                         default:
                             return 0;
-                    } 
+                    }
                 }
                 catch (Exception)
                 {
@@ -210,4 +221,4 @@ namespace FlowSimulator
         }
     }
 }
-   
+

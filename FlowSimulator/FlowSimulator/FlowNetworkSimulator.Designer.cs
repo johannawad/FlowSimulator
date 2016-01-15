@@ -33,12 +33,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.RedoButton = new System.Windows.Forms.PictureBox();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.HelpButton = new System.Windows.Forms.PictureBox();
+            this.DeleteAllButton = new System.Windows.Forms.PictureBox();
             this.UndoButton = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.SaveButton = new System.Windows.Forms.PictureBox();
+            this.OpenButton = new System.Windows.Forms.PictureBox();
+            this.NewButton = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnPipe = new System.Windows.Forms.Button();
             this.btnMerger = new System.Windows.Forms.Button();
@@ -51,6 +51,7 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label7 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -64,15 +65,14 @@
             this.cmsEditPipeline = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLabel = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RedoButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HelpButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DeleteAllButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UndoButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SaveButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OpenButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NewButton)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -87,16 +87,17 @@
             this.panel1.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.panel1.Controls.Add(this.RedoButton);
             this.panel1.Controls.Add(this.panel6);
-            this.panel1.Controls.Add(this.pictureBox6);
-            this.panel1.Controls.Add(this.pictureBox5);
+            this.panel1.Controls.Add(this.HelpButton);
+            this.panel1.Controls.Add(this.DeleteAllButton);
             this.panel1.Controls.Add(this.UndoButton);
-            this.panel1.Controls.Add(this.pictureBox3);
-            this.panel1.Controls.Add(this.pictureBox2);
-            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.SaveButton);
+            this.panel1.Controls.Add(this.OpenButton);
+            this.panel1.Controls.Add(this.NewButton);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(812, 48);
             this.panel1.TabIndex = 0;
+            this.panel1.MouseHover += new System.EventHandler(this.panel1_MouseHover);
             // 
             // RedoButton
             // 
@@ -108,6 +109,7 @@
             this.RedoButton.TabIndex = 7;
             this.RedoButton.TabStop = false;
             this.RedoButton.Click += new System.EventHandler(this.RedoButton_Click);
+            this.RedoButton.MouseHover += new System.EventHandler(this.RedoButton_MouseHover);
             // 
             // panel6
             // 
@@ -117,23 +119,26 @@
             this.panel6.Size = new System.Drawing.Size(92, 21);
             this.panel6.TabIndex = 3;
             // 
-            // pictureBox6
+            // HelpButton
             // 
-            this.pictureBox6.Image = global::FlowSimulator.Properties.Resources.help;
-            this.pictureBox6.Location = new System.Drawing.Point(250, 12);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(28, 29);
-            this.pictureBox6.TabIndex = 6;
-            this.pictureBox6.TabStop = false;
+            this.HelpButton.Image = global::FlowSimulator.Properties.Resources.help;
+            this.HelpButton.Location = new System.Drawing.Point(250, 12);
+            this.HelpButton.Name = "HelpButton";
+            this.HelpButton.Size = new System.Drawing.Size(28, 29);
+            this.HelpButton.TabIndex = 6;
+            this.HelpButton.TabStop = false;
+            this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);
+            this.HelpButton.MouseHover += new System.EventHandler(this.HelpButton_MouseHover);
             // 
-            // pictureBox5
+            // DeleteAllButton
             // 
-            this.pictureBox5.Image = global::FlowSimulator.Properties.Resources.delete;
-            this.pictureBox5.Location = new System.Drawing.Point(214, 12);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(30, 29);
-            this.pictureBox5.TabIndex = 5;
-            this.pictureBox5.TabStop = false;
+            this.DeleteAllButton.Image = global::FlowSimulator.Properties.Resources.delete;
+            this.DeleteAllButton.Location = new System.Drawing.Point(214, 12);
+            this.DeleteAllButton.Name = "DeleteAllButton";
+            this.DeleteAllButton.Size = new System.Drawing.Size(30, 29);
+            this.DeleteAllButton.TabIndex = 5;
+            this.DeleteAllButton.TabStop = false;
+            this.DeleteAllButton.MouseHover += new System.EventHandler(this.DeleteAllButton_MouseHover);
             // 
             // UndoButton
             // 
@@ -145,35 +150,37 @@
             this.UndoButton.TabIndex = 4;
             this.UndoButton.TabStop = false;
             this.UndoButton.Click += new System.EventHandler(this.UndoButton_Click);
+            this.UndoButton.MouseHover += new System.EventHandler(this.UndoButton_MouseHover);
             // 
-            // pictureBox3
+            // SaveButton
             // 
-            this.pictureBox3.Image = global::FlowSimulator.Properties.Resources.save;
-            this.pictureBox3.Location = new System.Drawing.Point(93, 12);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(32, 29);
-            this.pictureBox3.TabIndex = 3;
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            this.SaveButton.Image = global::FlowSimulator.Properties.Resources.save;
+            this.SaveButton.Location = new System.Drawing.Point(93, 12);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(32, 29);
+            this.SaveButton.TabIndex = 3;
+            this.SaveButton.TabStop = false;
+            this.SaveButton.Click += new System.EventHandler(this.pictureBox3_Click);
+            this.SaveButton.MouseHover += new System.EventHandler(this.SaveButton_MouseHover);
             // 
-            // pictureBox2
+            // OpenButton
             // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(47, 12);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(40, 29);
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
+            this.OpenButton.Image = ((System.Drawing.Image)(resources.GetObject("OpenButton.Image")));
+            this.OpenButton.Location = new System.Drawing.Point(47, 12);
+            this.OpenButton.Name = "OpenButton";
+            this.OpenButton.Size = new System.Drawing.Size(40, 29);
+            this.OpenButton.TabIndex = 2;
+            this.OpenButton.TabStop = false;
             // 
-            // pictureBox1
+            // NewButton
             // 
-            this.pictureBox1.Image = global::FlowSimulator.Properties.Resources._new;
-            this.pictureBox1.Location = new System.Drawing.Point(7, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(34, 29);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.NewButton.Image = global::FlowSimulator.Properties.Resources._new;
+            this.NewButton.Location = new System.Drawing.Point(7, 12);
+            this.NewButton.Name = "NewButton";
+            this.NewButton.Size = new System.Drawing.Size(34, 29);
+            this.NewButton.TabIndex = 2;
+            this.NewButton.TabStop = false;
+            this.NewButton.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // panel2
             // 
@@ -187,6 +194,7 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(92, 439);
             this.panel2.TabIndex = 1;
+            this.panel2.MouseHover += new System.EventHandler(this.panel2_MouseHover);
             // 
             // btnPipe
             // 
@@ -198,6 +206,7 @@
             this.btnPipe.TabIndex = 13;
             this.btnPipe.UseVisualStyleBackColor = false;
             this.btnPipe.Click += new System.EventHandler(this.btnPipe_Click);
+            this.btnPipe.MouseHover += new System.EventHandler(this.btnPipe_MouseHover);
             // 
             // btnMerger
             // 
@@ -209,6 +218,7 @@
             this.btnMerger.TabIndex = 12;
             this.btnMerger.UseVisualStyleBackColor = false;
             this.btnMerger.Click += new System.EventHandler(this.btnMerger_Click);
+            this.btnMerger.MouseHover += new System.EventHandler(this.btnMerger_MouseHover);
             // 
             // btnSplitter
             // 
@@ -220,6 +230,7 @@
             this.btnSplitter.TabIndex = 11;
             this.btnSplitter.UseVisualStyleBackColor = false;
             this.btnSplitter.Click += new System.EventHandler(this.btnSplitter_Click);
+            this.btnSplitter.MouseHover += new System.EventHandler(this.btnSplitter_MouseHover);
             // 
             // btnSink
             // 
@@ -231,6 +242,7 @@
             this.btnSink.TabIndex = 10;
             this.btnSink.UseVisualStyleBackColor = false;
             this.btnSink.Click += new System.EventHandler(this.btnSink_Click);
+            this.btnSink.MouseHover += new System.EventHandler(this.btnSink_MouseHover);
             // 
             // btnPump
             // 
@@ -242,6 +254,7 @@
             this.btnPump.TabIndex = 9;
             this.btnPump.UseVisualStyleBackColor = false;
             this.btnPump.Click += new System.EventHandler(this.btnPump_Click);
+            this.btnPump.MouseHover += new System.EventHandler(this.btnPump_MouseHover);
             // 
             // label1
             // 
@@ -263,6 +276,7 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(721, 21);
             this.panel4.TabIndex = 3;
+            this.panel4.MouseHover += new System.EventHandler(this.panel4_MouseHover);
             // 
             // label2
             // 
@@ -311,6 +325,15 @@
             this.trackBar1.TabIndex = 5;
             this.trackBar1.Value = 5;
             this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(7, 85);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(61, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Splitter flow";
             // 
             // textBox2
             // 
@@ -422,15 +445,6 @@
             this.flowLabel.TabIndex = 5;
             this.flowLabel.Text = "label7";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 85);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(61, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Splitter flow";
-            // 
             // FlowNetworkSimulator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -452,12 +466,12 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FlowNetworkSimulator_MouseMove);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RedoButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HelpButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DeleteAllButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.UndoButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SaveButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OpenButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NewButton)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -478,11 +492,11 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox6;
-        private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.PictureBox NewButton;
+        private System.Windows.Forms.PictureBox OpenButton;
+        private System.Windows.Forms.PictureBox SaveButton;
+        private System.Windows.Forms.PictureBox HelpButton;
+        private System.Windows.Forms.PictureBox DeleteAllButton;
         private System.Windows.Forms.PictureBox UndoButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel4;

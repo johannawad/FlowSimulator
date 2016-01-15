@@ -550,9 +550,122 @@ namespace FlowSimulator
             //        }
 
                 }
+        private void HelpButton_Click(object sender, EventArgs e)
+        {
+            Help help = new Help();
+            help.ShowDialog();
+        }
+
+        private void btnPump_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Pump: Initiates the flow", win, mousepoint);
+        }
+
+        private void btnSink_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Sink: Collects the flow", win, mousepoint);
+        }
+
+        private void btnSplitter_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Splitter: Splits the flow", win, mousepoint);
+        }
+
+        private void btnMerger_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Merger: Merges the flow", win, mousepoint);
+        }
+
+        private void btnPipe_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Pipe: Establishes a connection", win, mousepoint);
+        }
+
+        private void panel2_MouseHover(object sender, EventArgs e)
+        {
+            tooltip.RemoveAll();
+        }
+
+     
+
+        private void NewButton_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Create a new flow network diagram", win, mousepoint);
+        }
+
+        private void OpenButton_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Open an existing flow network diagram", win, mousepoint);
+        }
+
+        private void SaveButton_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Save a flow network diagram", win, mousepoint);
+        }
+
+        private void UndoButton_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Undo an action", win, mousepoint);
+        }
+
+        private void RedoButton_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Redo an action", win, mousepoint);
+        }
+
+        private void DeleteAllButton_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Delete all components on the drawing area", win, mousepoint);
+        }
+
+        private void HelpButton_MouseHover(object sender, EventArgs e)
+        {
+            IWin32Window win = this;
+            Point mousepoint = PointToClient(Cursor.Position);
+            tooltip.Show("Help", win, mousepoint);
+        }
+
+        private void panel1_MouseHover(object sender, EventArgs e)
+        {
+            tooltip.RemoveAll();
+        }
+
+        private void panel4_MouseHover(object sender, EventArgs e)
+        {
+            tooltip.RemoveAll();
+        }
+
+
               
         
 
 
         }
-    }
+              
+        
+
+
+        }
+    
