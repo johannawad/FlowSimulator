@@ -277,6 +277,15 @@ namespace FlowSimulator
                 Component temp = canvas.SelectComponent(mousepoint);
                 flowLabel.Location = new Point(temp.Position.X + 6, temp.Position.Y - 15);
                 flowLabel.Text = temp.Capacity+ "("+ temp.CurrentFlow + ")";
+                if (temp.Capacity < temp.CurrentFlow)
+                {
+                    flowLabel.ForeColor = Color.Red;
+                }
+                else
+                {
+                    flowLabel.ForeColor = Color.Black;
+
+                }
             }
             if ((selectedPipeline = canvas.SelectPipeline(mousepoint)) != null)
             {
