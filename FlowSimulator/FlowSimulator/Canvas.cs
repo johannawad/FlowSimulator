@@ -15,8 +15,7 @@ namespace FlowSimulator
     ///
     public class Canvas
     {
-        private bool IsOccupied;
-
+       
 
         /// <summary>
         /// This list will contain all the components that have been drawn on the canvas
@@ -206,11 +205,11 @@ namespace FlowSimulator
         /// To remove multiple selected components from the canvas
         /// </summary>
         /// <param name="selectedComponents"></param>
-        public void DeleteComponent(Point mouseClicked)
+        public void DeleteComponent(Component wantedcomp)
         {
             //Rectangle tempMousePoint = new Rectangle(mouseClicked, new Size(1, 1));
 
-            Component wantedcomp = SelectComponent(mouseClicked);
+           
             // removes all Components connected
             switch (wantedcomp.GetType())
             {
@@ -218,42 +217,42 @@ namespace FlowSimulator
                 case ComponentType.Pump:
                     if (wantedcomp.OutPut!=null)
                     {
-                        DeletePipeline((Pipeline)wantedcomp.OutPut);
+                        DeAttachPipeLine((Pipeline)wantedcomp.OutPut);
                     }
                     
                     break;
                 case ComponentType.Splitter:
                     if (wantedcomp.InPut != null)
                     {
-                        DeletePipeline((Pipeline)wantedcomp.InPut);
+                        DeAttachPipeLine((Pipeline)wantedcomp.InPut);
                     }
                     if (wantedcomp.OutPutUp != null)
                     {
-                        DeletePipeline((Pipeline)wantedcomp.OutPutUp);
+                        DeAttachPipeLine((Pipeline)wantedcomp.OutPutUp);
                     }
                     if (wantedcomp.OutPutDown != null)
                     {
-                        DeletePipeline((Pipeline)wantedcomp.OutPutDown);
+                        DeAttachPipeLine((Pipeline)wantedcomp.OutPutDown);
                     }
                     break;
                 case ComponentType.Merger:
                     if (wantedcomp.InPutUp != null)
                     {
-                        DeletePipeline((Pipeline)wantedcomp.InPutUp);
+                        DeAttachPipeLine((Pipeline)wantedcomp.InPutUp);
                     }
                     if (wantedcomp.InPutDown != null)
                     {
-                        DeletePipeline((Pipeline)wantedcomp.InPutUp);
+                        DeAttachPipeLine((Pipeline)wantedcomp.InPutUp);
                     }
                     if (wantedcomp.OutPut != null)
                     {
-                        DeletePipeline((Pipeline)wantedcomp.OutPut);
+                        DeAttachPipeLine((Pipeline)wantedcomp.OutPut);
                     }
                     break;
                 case ComponentType.Sink:
                     if (wantedcomp.InPut != null)
                     {
-                        DeletePipeline((Pipeline)wantedcomp.InPut);
+                        DeAttachPipeLine((Pipeline)wantedcomp.InPut);
                     }
                     break;
                 
@@ -286,7 +285,7 @@ namespace FlowSimulator
         /// </summary>
         /// <returns></returns>
         /// 
-        private Pipeline p;
+        
 
 
         /// <summary>
@@ -321,14 +320,19 @@ namespace FlowSimulator
             {
                 case ActionType.Create:
                     UndoRedoList[UndoRedoIndex] = new Action(ActionType.Delete, CurrentAction.Component);
-                    Components.Remove(CurrentAction.Component);
+                     if (CurrentAction.Component is Pipeline) 
+                     DeletePipeline((Pipeline)CurrentAction.Component); 
+                     else 
+                     DeleteComponent(CurrentAction.Component);
+                    
+                   
                     break;
                 case ActionType.Move:
                     UndoRedoList[UndoRedoIndex] = new Action(ActionType.Move, CurrentAction.Component);
                     CurrentAction.Component.Position = CurrentAction.Position;
                     break;
                 case ActionType.Delete:
-                    Components.Add(CurrentAction.Component);
+                    ReAddComponent(CurrentAction.Component);
                     UndoRedoList[UndoRedoIndex] = new Action(ActionType.Create, CurrentAction.Component);
                     break;
 
@@ -346,14 +350,19 @@ namespace FlowSimulator
             {
                 case ActionType.Create:
                     UndoRedoList[UndoRedoIndex + 1] = new Action(ActionType.Delete, RedoAction.Component);
-                    Components.Remove(RedoAction.Component);
+                    if (RedoAction.Component is Pipeline)
+                     DeletePipeline((Pipeline)RedoAction.Component);
+                     else
+                     DeleteComponent(RedoAction.Component);
+                    
                     break;
                 case ActionType.Move:
                     UndoRedoList[UndoRedoIndex + 1] = new Action(ActionType.Move, RedoAction.Component);
                     RedoAction.Component.Position = RedoAction.Position;
                     break;
                 case ActionType.Delete:
-                    Components.Add(RedoAction.Component);
+                    
+                    ReAddComponent(RedoAction.Component);
                     UndoRedoList[UndoRedoIndex + 1] = new Action(ActionType.Create, RedoAction.Component);
                     break;
 
@@ -367,10 +376,11 @@ namespace FlowSimulator
         /// <param name="comp">reference to the component</param>
         public void CreateUndo(ActionType ActType, Component comp)
         {
-            UndoRedoList.Add(new Action(ActType, comp));
-            UndoRedoIndex++;
             if (UndoRedoIndex + 1 < UndoRedoList.Count)
             { UndoRedoList.RemoveAt(UndoRedoIndex + 1); }
+            UndoRedoList.Add(new Action(ActType, comp));
+            UndoRedoIndex++;
+           
 
         }
 
@@ -439,51 +449,127 @@ namespace FlowSimulator
         /// </summary>
         /// <param name="p">the coordinates</param>
         /// <returns></returns>
-       /* public Component GetComponent(Point p)
+        /* public Component GetComponent(Point p)
+         {
+
+
+             Rectangle temp = new Rectangle(p.X - 5, p.Y - 5, 10, 10);
+             foreach (Component c in Components)
+             {
+                 if (c is Pipeline)
+                 {
+                     Pipeline pipeline = ((Pipeline)c);
+                     if (DistanceFromPointToLine(p, pipeline.InPutPoint, pipeline.OutPutPoint) < 4)
+                     {
+                         return c;
+                     }
+                 }
+                 //if (c.SelectionArea.Contains(point))
+                 if (temp.IntersectsWith(c.SelectionArea))
+                 {
+                     return c;
+                 }
+             }
+             return null;
+
+
+
+
+         }
+         */
+
+
+        /// <summary>
+        /// This method is only used for undo and redo as it needs to keep a connection to the input component
+        /// </summary>
+        /// <param name="pipe">the selected pipe</param>   
+        public void DeAttachPipeLine(Pipeline pipe)
         {
+            // delete connections
 
-            
-            Rectangle temp = new Rectangle(p.X - 5, p.Y - 5, 10, 10);
-            foreach (Component c in Components)
-            {
-                if (c is Pipeline)
-                {
-                    Pipeline pipeline = ((Pipeline)c);
-                    if (DistanceFromPointToLine(p, pipeline.InPutPoint, pipeline.OutPutPoint) < 4)
-                    {
-                        return c;
-                    }
-                }
-                //if (c.SelectionArea.Contains(point))
-                if (temp.IntersectsWith(c.SelectionArea))
-                {
-                    return c;
-                }
-            }
-            return null;
+            // ((Part)pipe.InPut).Disconnect(pipe);
 
-           
+            ((Part)pipe.OutPut).Disconnect(pipe);
 
-
+            Components.Remove(pipe);           //delete selected wire
         }
-        */
-
         public void DeletePipeline(Pipeline pipe)
         {
             
-            
-            CreateUndo(ActionType.Delete, pipe);
-           
                 // delete connections
                
-                    ((Part)pipe.InPut).Disconnect(pipe);
+                   ((Part)pipe.InPut).Disconnect(pipe);
        
                     ((Part)pipe.OutPut).Disconnect(pipe);
            
             Components.Remove(pipe);           //delete selected wire
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="comp"></param>
+        public void ReAddComponent(Component comp)
+        {
+            Components.Add(comp);
+            switch (comp.GetType())
+            {
+                case ComponentType.Pipeline:
+                    if (comp.InPut != null)
+                    {
+                        ((Part)(comp).InPut).Connect((Pipeline)comp);
+                    }
 
+                    if (comp.OutPut != null)
+                    {
+                        ((Part)(comp).OutPut).Connect((Pipeline)comp);
+                    }
+                    break;
+                case ComponentType.Pump:
+                    if (comp.OutPut != null)
+                    { ((Part)(comp).OutPut.OutPut).Connect((Pipeline)comp.OutPut);
+                        Components.Add(comp.OutPut);
+                    }
 
+                    break;
+                case ComponentType.Splitter:
+                    if (comp.InPut != null)
+                    { ((Part)(comp).InPut.OutPut).Connect((Pipeline)comp.InPut);
+                        Components.Add(comp.InPut);
+                    }
+                    if (comp.OutPutUp != null)
+                    { ((Part)(comp).OutPutUp.OutPut).Connect((Pipeline)comp.OutPutUp);
+                        Components.Add(comp.OutPutUp);
+                    }
+                    if (comp.OutPutDown != null)
+                    { ((Part)(comp).OutPutDown.OutPut).Connect((Pipeline)comp.OutPutDown);
+                        Components.Add(comp.OutPutDown);
+                    }
+                    break;
+                case ComponentType.Merger:
+                    if (comp.OutPut != null)
+                    { ((Part)(comp).OutPut.OutPut).Connect((Pipeline)comp.OutPut);
+                        Components.Add(comp.OutPut);
+                    }
+                    if (comp.InPutUp != null)
+                    { ((Part)(comp).InPutUp.OutPut).Connect((Pipeline)comp.InPutUp);
+                        Components.Add(comp.InPutUp);
+                    }
+                    if (comp.InPutDown != null)
+                    { ((Part)(comp).InPutDown.OutPut).Connect((Pipeline)comp.InPutDown);
+                        Components.Add(comp.InPutDown);
+                    }
+                    break;
+                case ComponentType.Sink:
+                    if (comp.InPut != null)
+                    {
+                        ((Part)(comp).InPut.OutPut).Connect((Pipeline)comp.InPut);
+                        Components.Add(comp.InPut);
+                    }
+                    break;
+                
+            }
+           
+        }
         
      
         /*
@@ -601,6 +687,7 @@ namespace FlowSimulator
             Components.Add(pipe);
             ((Part)c1).Connect(pipe);
             ((Part)c2).Connect(pipe);
+                CreateUndo(ActionType.Create, pipe);
             return true;
             }
             catch (Exception)

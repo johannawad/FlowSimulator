@@ -22,7 +22,7 @@ namespace FlowSimulator
         public Component OutPutUp { get; set; }
         public Component OutPutDown { get; set; }
         public Component OutPut { get; set; }
-        public double Capacity { get; set; }
+        
         public abstract double CurrentFlow
         {
             get; set;

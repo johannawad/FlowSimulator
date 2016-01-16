@@ -143,6 +143,7 @@ namespace FlowSimulator
 
         private void FlowNetworkSimulator_MouseClick(object sender, MouseEventArgs e)
         {
+            flowLabel.Visible = false;
             mousepoint = PointToClient(Cursor.Position);
             tooltip.RemoveAll();
             IWin32Window win = this;
@@ -154,21 +155,26 @@ namespace FlowSimulator
                 if ((tempComponent = canvas.SelectComponent(mousepoint)) != null)
                 {
                     isSelected = true;
-                    if (tempComponent is Splitter)
-                        trackBar1.Enabled = true;
-                    else
-                    {
-                        trackBar1.Enabled = false;
-                    }
-                    if (tempComponent is Pump)
-                        textBox1.Enabled = true;
-                    else
-                    {
-                        textBox1.Enabled = false;
-                    }
 
-                    
-                    
+                    trackBar1.Enabled = false;
+                    textBox1.Enabled = false;
+                    textBox2.Enabled = false;
+                    switch (tempComponent.GetType())
+                    {
+                        case ComponentType.Pipeline:
+                            textBox2.Enabled = true;
+                            break;
+                        case ComponentType.Pump:
+                            textBox1.Enabled = true;
+                            textBox2.Enabled = true;
+                            break;
+                        case ComponentType.Splitter:
+                            trackBar1.Enabled = true;
+                            break;
+                        
+                       
+                    }
+                   
                     this.Refresh();
 
 
@@ -275,22 +281,14 @@ namespace FlowSimulator
             if (isSelected)
             {
                 Component temp = canvas.SelectComponent(mousepoint);
-                flowLabel.Location = new Point(temp.Position.X + 6, temp.Position.Y - 15);
-                flowLabel.Text = temp.Capacity+ "("+ temp.CurrentFlow + ")";
-                if (temp.Capacity < temp.CurrentFlow)
-                {
-                    flowLabel.ForeColor = Color.Red;
-                }
-                else
-                {
-                    flowLabel.ForeColor = Color.Black;
-
-                }
+                UpdateFlowLabel(temp);
+                
+               
             }
             if ((selectedPipeline = canvas.SelectPipeline(mousepoint)) != null)
             {
-                flowLabel.Location = canvas.getMidPoint(selectedPipeline);
-                flowLabel.Text = selectedPipeline.Capacity + "(" + selectedPipeline.CurrentFlow+")";
+
+                UpdateFlowLabel(selectedPipeline);
             }
         }
 
@@ -319,7 +317,7 @@ namespace FlowSimulator
                         selectedComponent.Position = new Point(mouseClick.X, mouseClick.Y);
                         Component temp = selectedComponent;
                         flowLabel.Location = new Point(temp.Position.X + 6, temp.Position.Y - 15);
-                        flowLabel.Text = temp.Capacity + "(" + temp.CurrentFlow + ")";
+                        
                     }
                     this.Refresh();
                 }
@@ -414,11 +412,12 @@ namespace FlowSimulator
 
         private void RedoButton_Click(object sender, EventArgs e)
         {
-            canvas.RedoLastAction();
-            if (canvas.UndoRedoIndex +1 == canvas.UndoRedoList.Count)
+            if (canvas.UndoRedoIndex + 1 == canvas.UndoRedoList.Count)
             {
                 RedoButton.Enabled = false;
-            }
+            }else
+            canvas.RedoLastAction();
+            
             UndoButton.Enabled = true;
             this.Refresh();
             
@@ -456,7 +455,7 @@ namespace FlowSimulator
             }
             else
             {
-                canvas.DeleteComponent(mousepoint);
+                canvas.DeleteComponent(canvas.SelectComponent(mousepoint));
             }
            
            
@@ -470,14 +469,10 @@ namespace FlowSimulator
             {
                 if (textBox2.Text != "")
                 {
-                    selectedComponent.Capacity = Convert.ToInt32(textBox2.Text);
+                    ((Pump)selectedComponent).Capacity = Convert.ToInt32(textBox2.Text);
                     selectedComponent.CurrentFlow = Convert.ToInt32(textBox1.Text);
 
-                    flowLabel.Text = selectedComponent.Capacity + "(" + selectedComponent.CurrentFlow + ")";
-                    if (selectedComponent.Capacity < selectedComponent.CurrentFlow)
-                        flowLabel.ForeColor = Color.Red;
-
-                    else flowLabel.ForeColor = Color.Black;
+                    UpdateFlowLabel(selectedComponent);
 
                 }
             }
@@ -486,7 +481,33 @@ namespace FlowSimulator
             this.Refresh();
 
         }
+        private void UpdateFlowLabel(Component temp)
+        {
+            flowLabel.Visible = true;
+            if (temp is Pipeline)
+                flowLabel.Location = canvas.getMidPoint((Pipeline)temp);
+            else
+            flowLabel.Location = new Point(temp.Position.X + 6, temp.Position.Y - 15);
+            flowLabel.ForeColor = Color.Black;
+            switch (temp.GetType())
+            {
+                case ComponentType.Pipeline:
+                    if (((Pipeline)temp).SafetyLimit < temp.CurrentFlow)
+                    {
+                        flowLabel.ForeColor = Color.Red;
+                    }
+                    flowLabel.Text = "F: " + temp.CurrentFlow + " SL: " + ((Pipeline)temp).SafetyLimit;
+                    break;
+                case ComponentType.Pump:
+                    flowLabel.Text = "F: " + temp.CurrentFlow + " C: " + ((Pump)temp).Capacity;
+                    break;
 
+                default:
+                    flowLabel.Text = "Flow: " + temp.CurrentFlow;
+                    break;
+            }
+
+        }
         private void textBox1_TextChanged(object sender, EventArgs e)//  flow
         {
             Component temp;
@@ -496,10 +517,7 @@ namespace FlowSimulator
                 if (textBox1.Text != "")
                 {
                     temp.CurrentFlow = Convert.ToDouble(textBox1.Text);
-                    flowLabel.Text = temp.Capacity + "(" + temp.CurrentFlow + ")";
-                    if (temp.Capacity < temp.CurrentFlow)
-                        flowLabel.ForeColor = Color.Red;
-                    else flowLabel.ForeColor = Color.Black;
+                    UpdateFlowLabel(temp);
                     //canvas.UpdateProperties(temp);
                 }
             }

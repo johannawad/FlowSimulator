@@ -9,13 +9,28 @@ namespace FlowSimulator
     public class Pump : Part
         
     {
-       
+        private double capacity;
         /// <summary>
         /// The pipeline connected to the node of this pump
         /// </summary>
         public bool PipelineConnected = false;
-
-
+        /// <summary>
+        /// the capacity that is not allowed to be smaller than the CurrentFLow
+        /// </summary>
+        public double Capacity {
+            get { return capacity; }
+            set
+            {
+                if (value < 0)
+                {
+                    capacity = 0;
+                }
+                else
+                {
+                    capacity = value;
+                }
+            }
+        }
         /// <summary>
         /// establishes a connection
         /// </summary>
@@ -32,11 +47,11 @@ namespace FlowSimulator
         }
         public Pump(Point position): base(position)
         {
-            this.compImage = new Bitmap(Properties.Resources.pump);
-            this.compImageNot = new Bitmap(Properties.Resources.pumpNot);
-            this.compIcon = new Bitmap(Properties.Resources.pumpIco);
-            this.compIconNot = new Bitmap(Properties.Resources.pumpNotIco);
-
+            compImage = new Bitmap(Properties.Resources.pump);
+            compImageNot = new Bitmap(Properties.Resources.pumpNot);
+            compIcon = new Bitmap(Properties.Resources.pumpIco);
+            compIconNot = new Bitmap(Properties.Resources.pumpNotIco);
+            Capacity = 10;
         }
         public bool Input { get; set; }
 
@@ -49,7 +64,19 @@ namespace FlowSimulator
 
             set
             {
-                currentflow = value;
+                if ((value < Capacity) && (value >= 0))
+                {
+                    currentflow = value;
+                }else
+                if (value <0)
+                {
+                    currentflow = 0;
+                }
+                else
+                {
+                    currentflow = Capacity;
+                }
+                
             }
         }
 

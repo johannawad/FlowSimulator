@@ -10,18 +10,11 @@ namespace FlowSimulator
     public class Pipeline : Component
     {
 
+        private double safetylimit;
         /// <summary>
-        /// The InPut component connected to the pipeline
+        /// if the currentflow exceeds the safetylimit the pipe will be red
         /// </summary>
-
-
-
-
-
-        /// <summary>
-        /// The OutPut component connected to the pipeline
-        /// </summary>
-
+        public double SafetyLimit { get { return safetylimit; } set { if (value < 0) { safetylimit = 0; } else { safetylimit = value; } } }
 
         /// <summary>
         /// Determines if the CurrentFlow through the pipeline is critical
@@ -30,7 +23,7 @@ namespace FlowSimulator
         {
             get
             {
-                if (CurrentFlow > Capacity)
+                if (CurrentFlow > SafetyLimit)
                     return true;
                 else
                 {
@@ -46,7 +39,7 @@ namespace FlowSimulator
         {
             this.InPut = InPut;
             this.OutPut = OutPut;
-            this.Capacity = 10;
+            SafetyLimit = 5;
             /* if (InPut.GetType() == typeof(Splitter))
              {
                  if (InPut.OutPutUp != null && InPut.OutPutDown == null)
