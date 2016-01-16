@@ -467,14 +467,23 @@ namespace FlowSimulator
         {
             if ((selectedComponent = canvas.SelectComponent(mousepoint)) != null)
             {
-                if (textBox2.Text != "")
+                if (selectedComponent is Pump)
                 {
-                    ((Pump)selectedComponent).Capacity = Convert.ToInt32(textBox2.Text);
-                    selectedComponent.CurrentFlow = Convert.ToInt32(textBox1.Text);
+                    if (textBox2.Text != "")
+                    {
+                        ((Pump)selectedComponent).Capacity = Convert.ToDouble(textBox2.Text);
+                       
+                    }
+                }
+                if (selectedComponent is Pipeline)
+                {
+                    ((Pipeline)selectedComponent).SafetyLimit = Convert.ToDouble(textBox2.Text);
 
-                    UpdateFlowLabel(selectedComponent);
+
+                   
 
                 }
+                UpdateFlowLabel(selectedComponent);
             }
             selectedComponent = null;
 
