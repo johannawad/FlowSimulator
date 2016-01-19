@@ -8,19 +8,7 @@ namespace FlowSimulator
 {
     public class Merger : Part
     {  
-       
-
-
-        /// <summary>
-        /// Determines the percentage through the first channel of the splitter
-        /// </summary>
-        public double PercentageUp { get; set; }
-
-        /// <summary>
-        /// The remainder from the PercentageUp
-        /// </summary>
-        public double PercentageDown { get; set; }
-
+        //current flow through the merfer
         public override double CurrentFlow
         {
             get
@@ -42,8 +30,6 @@ namespace FlowSimulator
                 
             }
         }
-
-
         /// <summary>
         /// To establish a connection with a pipeline
         /// </summary>
@@ -63,6 +49,10 @@ namespace FlowSimulator
                 OutPut = pipeline;
             }
         }
+        /// <summary>
+        /// Remove an existing connection
+        /// </summary>
+        /// <param name="p"></param>
         public override void Disconnect(Pipeline p)
         {
             if (InPutUp == p)
@@ -107,6 +97,11 @@ namespace FlowSimulator
             this.compIcon = new Bitmap(Properties.Resources.mergerIco);
             this.compIconNot = new Bitmap(Properties.Resources.mergerNotIco);
         }
+        /// <summary>
+        /// returns the image to be displayed on the canvas
+        /// </summary>
+        /// <param name="isNotOccupied"></param>
+        /// <returns></returns>
         public override Image ComponentImage(bool isNotOccupied)
         {
             if (isNotOccupied)
@@ -115,6 +110,11 @@ namespace FlowSimulator
             }
             else return compImageNot;
         }
+        /// <summary>
+        /// returns an image if placing of the merger is restricted
+        /// </summary>
+        /// <param name="isNotOccupied"></param>
+        /// <returns></returns>
         public override Image ComponentIconImage(bool isNotOccupied)
         {
             if (isNotOccupied)
@@ -123,7 +123,12 @@ namespace FlowSimulator
             }
             else return compIconNot;
         }
-
+        
+        /// <summary>
+        /// returns the port which has been connected
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public override Port WhichPort(Pipeline p)
         {
             if (InPutUp == p)

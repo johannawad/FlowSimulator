@@ -25,20 +25,7 @@ namespace FlowSimulator
             get;
             set;
         }
-        /// <summary>
-        /// To obtain the coordinates of the position that has been clicked by the mouse
-        public Point MousePoint
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-        public Size Size { get; set; }
-
+       
         /// <summary>
         /// Refers to a component that has been selected on the canvas
         /// </summary>
@@ -48,34 +35,7 @@ namespace FlowSimulator
             set;
         }
 
-        /// <summary>
-        /// When multiple components on the canvas have been selected
-        /// </summary>
-        public List<Component> SelectedComponents
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
-        /// <summary>
-        /// To store an action eg. save, undo etc.
-        /// </summary>
-        public Action Action
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
-
+       
         /// <summary>
         /// This list contains the undo-redo actions
         /// </summary>
@@ -110,29 +70,7 @@ namespace FlowSimulator
             Components.Add(c);
         }
 
-        /// <summary>
-        /// To remove an existing component from the canvas
-        /// </summary>
-        /// <param name="selectedComponent"></param>
         
-
-        /// <summary>
-        /// To draw a rectangle around the selected component
-        /// </summary>
-        /// <param name="g"></param>
-        public void DrawSelection(PaintEventArgs e, Component selectedComponent)
-        {
-            foreach (Component c in Components)
-            {
-                if (c == selectedComponent)
-                {
-                    Pen p = new Pen(System.Drawing.Color.Gray, 2);
-                    e.Graphics.DrawRectangle(p, c.Position.X, c.Position.Y, 40, 40);
-                }
-            }
-
-        }
-
         /// <summary>
         /// To select a component on the canvas
         /// </summary>
@@ -153,7 +91,7 @@ namespace FlowSimulator
                     }
                 }
                 //if (c.SelectionArea.Contains(point))
-                if (temp.IntersectsWith(c.SelectionArea))
+                else if (temp.IntersectsWith(c.SelectionArea))
                 {
                     return c;
                 }
@@ -185,26 +123,30 @@ namespace FlowSimulator
             return false;
         }
 
+        /// <summary>
+        /// returns the midpoint of the pipeline
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public Point getMidPoint(Pipeline p)
         {
             return new Point((p.InPutPoint.X + p.OutPutPoint.X) / 2, (p.InPutPoint.Y + p.OutPutPoint.Y) / 2);
         }
-
+        
 
         /// <summary>
-        /// To adjust the properties of a component on the canvas
+        /// To remove all components from the canvas
         /// </summary>
-        /// <param name="selectedComponent"></param>
-        /// <returns></returns>
-        public bool AdjustProperties(Component selectedComponent)
+        /// <param name="selectedComponents"></param>
+        public void DeleteAll()
         {
-            throw new System.NotImplementedException();
+            Components.Clear();
         }
 
         /// <summary>
-        /// To remove multiple selected components from the canvas
+        /// To delete a single component
         /// </summary>
-        /// <param name="selectedComponents"></param>
+        /// <param name="wantedcomp"></param>
         public void DeleteComponent(Component wantedcomp)
         {
             //Rectangle tempMousePoint = new Rectangle(mouseClicked, new Size(1, 1));
@@ -259,53 +201,6 @@ namespace FlowSimulator
             }
             Components.Remove(wantedcomp);
         }
-
-        public Pipeline findSplitterPipeline(Component InPut)
-        {
-            Pipeline pipeline = null;
-            foreach (Component comp in Components)
-            {
-                if (comp is Pipeline)
-                {
-                    pipeline = ((Pipeline)comp);
-
-                    if (pipeline != null)
-                    {
-                        if (pipeline.InPut == InPut)
-                            return SelectPipeline(new Point(InPut.Position.X + 40, InPut.Position.Y + 10));
-                        // temp = pipeline;
-                    }
-                }
-            }
-            return pipeline;
-        }
-
-        /// <summary>
-        /// To calculate the maximum flow through the network
-        /// </summary>
-        /// <returns></returns>
-        /// 
-        
-
-
-        /// <summary>
-        /// To calculate the maximum flow through the network
-        /// </summary>
-        /// <returns></returns>
-
-
-        /// <summary>
-        /// To draw a created component
-        /// </summary>
-        /// <param name="component"></param>
-        /// <param name="e"></param>
-        public void DrawComponent(Component c, PaintEventArgs e)
-        {
-            Image pump = Properties.Resources.pump;
-            e.Graphics.DrawImage(pump, c.Position);
-
-        }
-
 
         /// <summary>
         /// To undo the last action eg. adding a component
@@ -384,16 +279,7 @@ namespace FlowSimulator
 
         }
 
-
-        /// <summary>
-        /// To redraw an action that was deleted or moved(part of the Undo/redo methods)
-        /// </summary>
-        /// <param name="action"></param>
-        public void ReDraw(Action action)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         /// <summary>
         /// To draw a created component that is a pipeline
         /// </summary>
@@ -415,6 +301,13 @@ namespace FlowSimulator
             }
             return null;
         }
+        /// <summary>
+        /// To check if a point exists in a line
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
         public static double DistanceFromPointToLine(Point pt, Point p1, Point p2)
         {
             PointF closest;
@@ -444,41 +337,7 @@ namespace FlowSimulator
             }
             return Math.Sqrt(dx * dx + dy * dy);
         }
-        /// <summary>
-        /// A simple method that checkes wich Component you are looking for and returns the one you are looking for
-        /// </summary>
-        /// <param name="p">the coordinates</param>
-        /// <returns></returns>
-        /* public Component GetComponent(Point p)
-         {
-
-
-             Rectangle temp = new Rectangle(p.X - 5, p.Y - 5, 10, 10);
-             foreach (Component c in Components)
-             {
-                 if (c is Pipeline)
-                 {
-                     Pipeline pipeline = ((Pipeline)c);
-                     if (DistanceFromPointToLine(p, pipeline.InPutPoint, pipeline.OutPutPoint) < 4)
-                     {
-                         return c;
-                     }
-                 }
-                 //if (c.SelectionArea.Contains(point))
-                 if (temp.IntersectsWith(c.SelectionArea))
-                 {
-                     return c;
-                 }
-             }
-             return null;
-
-
-
-
-         }
-         */
-
-
+     
         /// <summary>
         /// This method is only used for undo and redo as it needs to keep a connection to the input component
         /// </summary>
@@ -493,6 +352,10 @@ namespace FlowSimulator
 
             Components.Remove(pipe);           //delete selected wire
         }
+        /// <summary>
+        /// To delete a pipeline
+        /// </summary>
+        /// <param name="pipe"></param>
         public void DeletePipeline(Pipeline pipe)
         {
             
@@ -504,10 +367,10 @@ namespace FlowSimulator
            
             Components.Remove(pipe);           //delete selected wire
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="comp"></param>
+    /// <summary>
+    /// To re-add a deleted component
+    /// </summary>
+    /// <param name="comp"></param>
         public void ReAddComponent(Component comp)
         {
             Components.Add(comp);
@@ -571,64 +434,12 @@ namespace FlowSimulator
            
         }
         
-     
-        /*
-        private bool isUpdated = false;
-        public void UpdateProperties(Component updatedComponent)
-        {
-            Component temp = null;
-            Pipeline pipeline = null;
-            foreach (Component comp in Components)
-            {
-                if (comp is Pipeline)
-                {
-                    pipeline = ((Pipeline)comp);
-                }
-                if (pipeline != null)
-                {
-                    if (pipeline.InPut == updatedComponent)
-                    {
-                        if (!isUpdated)
-                        {
-                            pipeline.OutPut.CurrentFlow += (updatedComponent.CurrentFlow - pipeline.CurrentFlow);
-                            pipeline.CurrentFlow = pipeline.OutPut.CurrentFlow;
-
-                        }
-                        if (pipeline.CurrentFlow != pipeline.InPut.CurrentFlow && pipeline.InPut.GetType() == typeof(Pump))
-                        {
-                            pipeline.CurrentFlow = pipeline.InPut.CurrentFlow;
-                            pipeline.OutPut.CurrentFlow = pipeline.CurrentFlow;
-                        }
-
-
-                        if (pipeline.OutPut.GetType() == typeof(Splitter))
-                        {
-                            if (pipeline.OutPut.OutPutUp != null)
-                            {
-
-                                p = findSplitterPipeline(pipeline.OutPut.OutPutUp);
-                                p.CurrentFlow = Math.Round(pipeline.OutPut.CurrentFlow *
-                                                    ((Splitter)pipeline.OutPut).PercentageUp, 2);
-
-
-                            }
-                            if (pipeline.OutPut.OutPutDown != null)
-                            {
-
-                                p = findSplitterPipeline(pipeline.OutPut.OutPutDown);
-                                p.CurrentFlow = Math.Round(pipeline.OutPut.CurrentFlow *
-                                                    ((Splitter)pipeline.OutPut).PercentageDown, 2);
-
-                            }
-
-
-                            updatedComponent = pipeline.OutPut;
-                        }
-                    }
-                }
-            }
-            isUpdated = true;
-        }*/
+ /// <summary>
+ /// establishes a connection(pipeline) between two parts(components)
+ /// </summary>
+ /// <param name="c1"></param>
+ /// <param name="c2"></param>
+ /// <returns></returns>
         public bool DrawPipeline(Component c1, Component c2)
         {
 
@@ -697,23 +508,6 @@ namespace FlowSimulator
             }
         }
 
-
-        /// <summary>
-        /// to give the coordinates of the line
-        /// </summary>
-        /// <returns></returns>
-        //private Point  AssignFirstCoordinate()
-        // {
-        //    if()
-        // }
-
-        /// <summary>
-        /// Refreshes the drawing area with all changes that has been made
-        /// </summary>
-        public void RefreshCanvas()
-        {
-            throw new System.NotImplementedException();
-        }
         public Canvas()
         {
 

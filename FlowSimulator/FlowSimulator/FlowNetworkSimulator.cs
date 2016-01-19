@@ -24,66 +24,17 @@ namespace FlowSimulator
         private ToolTip tooltip = new ToolTip();  // to show errors
         private bool compIsMoving = false, isOccupied = false, isSelected = false, addNewPipeline = false, connectedComp1 = false, wireIsSelected = false;
         Point first, second, third;
-        Pipeline selectedPipeline;
+        Pipeline selectedPipeline, p;
+        private bool propertiesSet = true;
+        private double percentage, remainingpercentage;
+        private int maxFlow, currentFlow;
         public FlowNetworkSimulator()
         {
             InitializeComponent();
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             canvas = new Canvas();
-            area = new Rectangle(new Point(120,95), new Size(550, 380));
+            area = new Rectangle(new Point(120, 95), new Size(550, 380));
             label8.Text = "Upper flow: " + 50 + "\n" + "Lower flow: " + 50;
-           
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-           
-        }
-
-        private void panel3_MouseClick(object sender, MouseEventArgs e)
-        {
-
-
-
-        }
-        private void EnablePropertiesPane(Component c)
-        {
-
-        }
-
-        private void panel3_MouseUp(object sender, MouseEventArgs e)
-        {
-
 
         }
 
@@ -91,28 +42,10 @@ namespace FlowSimulator
         {
             selectedComponent = new Pump(new Point(0, 0));
         }
-
-     
-
-        private void panel3_MouseDown(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void panel3_DragDrop(object sender, DragEventArgs e)
-        {
-            // Image selCom = (Image)sender;
-
-        }
-
-        private void panel3_DoubleClick(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void FlowNetworkSimulator_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void moveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -132,13 +65,6 @@ namespace FlowSimulator
                 compIsMoving = true;
                 this.Refresh();
             }
-        }
-
-        private void FlowNetworkSimulator_Click(object sender, MouseEventArgs e)
-        {
-          
-
-
         }
 
         private void FlowNetworkSimulator_MouseClick(object sender, MouseEventArgs e)
@@ -171,53 +97,53 @@ namespace FlowSimulator
                         case ComponentType.Splitter:
                             trackBar1.Enabled = true;
                             break;
-                        
-                       
+
+
                     }
-                   
+
                     this.Refresh();
 
 
                 }
                 if (selectedComponent != null && !canvas.IsOverlapping(selectedComponent.SelectionArea) && area.IntersectsWith(new Rectangle(mousepoint, new Size(40, 40))))
                 {
-                   
+
                     selectedComponent.Position = new Point(mousepoint.X, mousepoint.Y);
                     selectedComponent.UpdateSelectionArea();
-                  
+
                     canvas.CreateComponent(selectedComponent);
                     canvas.CreateUndo(ActionType.Create, selectedComponent);
                     UndoButton.Enabled = true;
                     selectedComponent = null;
                     compIsMoving = false;
-                    
+
                     this.Refresh();
                     this.Cursor = Cursors.Arrow;
                 }
-               
-                
-                
+
+
+
                 if (selectedComponent != null && canvas.IsOverlapping(selectedComponent.SelectionArea) || !area.IntersectsWith(new Rectangle(mousepoint, new Size(40, 40))))
                 {
                     canvas.CreateUndo(ActionType.Move, selectedComponent);
                     UndoButton.Enabled = true;
                     if (compIsMoving)
                     {
-                       
+
                         selectedComponent.Position = oldCoordinates;
                         selectedComponent.UpdateSelectionArea();
-                       // if(selectedComponent)
+                        // if(selectedComponent)
                         canvas.CreateComponent(selectedComponent);
                         compIsMoving = false;
                         this.Refresh();
                     }
-                    
+
                     selectedComponent = null;
                     //this.Cursor = Cursors.Arrow;
                     tooltip.Show("You cannot place a component here", win, mousepoint);
                     this.Cursor = Cursors.Arrow;
-                   
-                        }
+
+                }
                 if (addNewPipeline)
                 {
                     if (!connectedComp1)
@@ -230,12 +156,12 @@ namespace FlowSimulator
                     {
                         second = new Point(mousepoint.X, mousepoint.Y);
                         if (canvas.DrawPipeline(canvas.SelectComponent(first), canvas.SelectComponent(second)))
-                        {   
+                        {
                             connectedComp1 = false;
                             addNewPipeline = false;
 
-                           
-                           
+
+
                             this.Refresh();
                             this.Cursor = Cursors.Arrow;
                         }
@@ -249,11 +175,11 @@ namespace FlowSimulator
                     }
                 }
 
-               
+
             }
             else if (e.Button == MouseButtons.Right)
             {
-              //  mousepoint = this.formPointToClient(Cursor.Position);
+                //  mousepoint = this.formPointToClient(Cursor.Position);
                 //this.Cursor = Cursors.Arrow;
 
 
@@ -266,7 +192,7 @@ namespace FlowSimulator
                 }
                 else if ((selectedPipeline = canvas.SelectPipeline(mousepoint)) != null)
                 {
-                    
+
                     cmsEditPipeline.Show(Cursor.Position);
                     wireIsSelected = true;
                 }
@@ -277,13 +203,13 @@ namespace FlowSimulator
 
                 this.Refresh();
             }
-           
+
             if (isSelected)
             {
                 Component temp = canvas.SelectComponent(mousepoint);
                 UpdateFlowLabel(temp);
-                
-               
+
+
             }
             if ((selectedPipeline = canvas.SelectPipeline(mousepoint)) != null)
             {
@@ -291,8 +217,7 @@ namespace FlowSimulator
                 UpdateFlowLabel(selectedPipeline);
             }
         }
-
-        private bool propertiesSet = true;
+        
         private void FlowNetworkSimulator_MouseMove(object sender, MouseEventArgs e)
         {
             try
@@ -317,7 +242,7 @@ namespace FlowSimulator
                         selectedComponent.Position = new Point(mouseClick.X, mouseClick.Y);
                         Component temp = selectedComponent;
                         flowLabel.Location = new Point(temp.Position.X + 6, temp.Position.Y - 15);
-                        
+
                     }
                     this.Refresh();
                 }
@@ -339,10 +264,10 @@ namespace FlowSimulator
                     foreach (Component comp in canvas.Components)
                     {
                         if (comp is Part)
-                            gr.DrawImage(((Part) comp).ComponentImage(true), comp.Position);
+                            gr.DrawImage(((Part)comp).ComponentImage(true), comp.Position);
                         else
                         {
-                            p = (Pipeline) comp;
+                            p = (Pipeline)comp;
                             if (p.IsCritical)
                             {
                                 Pen pen1 = new Pen(Color.Red, 5);
@@ -364,9 +289,9 @@ namespace FlowSimulator
                     Rectangle rec = canvas.SelectComponent(mousepoint).SelectionArea;
                     gr.DrawRectangle(pen, rec);
                 }
-                
-                
-                
+
+
+
             }
             catch
             {
@@ -390,18 +315,11 @@ namespace FlowSimulator
         {
             selectedComponent = new Merger(new Point(0, 0));
         }
-        //private bool HasPipes()
-        //{
-        //    foreach (Pipeline Pipe in canvas.Components)
-        //    {
-        //        return true;
-        //    }
-        //    return false;
-        //}
+        
         private void UndoButton_Click(object sender, EventArgs e)
         {
             canvas.UndoLastAction();
-            if (canvas.UndoRedoIndex==-1)
+            if (canvas.UndoRedoIndex == -1)
             {
                 UndoButton.Enabled = false;
             }
@@ -415,12 +333,13 @@ namespace FlowSimulator
             if (canvas.UndoRedoIndex + 1 == canvas.UndoRedoList.Count)
             {
                 RedoButton.Enabled = false;
-            }else
-            canvas.RedoLastAction();
-            
+            }
+            else
+                canvas.RedoLastAction();
+
             UndoButton.Enabled = true;
             this.Refresh();
-            
+
         }
 
         private void btnPipe_Click(object sender, EventArgs e)
@@ -457,12 +376,11 @@ namespace FlowSimulator
             {
                 canvas.DeleteComponent(canvas.SelectComponent(mousepoint));
             }
-           
-           
+
+
             isSelected = false;
             this.Refresh();
         }
-        Pipeline p;
         private void textBox2_TextChanged(object sender, EventArgs e) // capacity
         {
             if ((selectedComponent = canvas.SelectComponent(mousepoint)) != null)
@@ -472,7 +390,7 @@ namespace FlowSimulator
                     if (textBox2.Text != "")
                     {
                         ((Pump)selectedComponent).Capacity = Convert.ToDouble(textBox2.Text);
-                       
+
                     }
                 }
                 if (selectedComponent is Pipeline)
@@ -480,7 +398,7 @@ namespace FlowSimulator
                     ((Pipeline)selectedComponent).SafetyLimit = Convert.ToDouble(textBox2.Text);
 
 
-                   
+
 
                 }
                 UpdateFlowLabel(selectedComponent);
@@ -496,7 +414,7 @@ namespace FlowSimulator
             if (temp is Pipeline)
                 flowLabel.Location = canvas.getMidPoint((Pipeline)temp);
             else
-            flowLabel.Location = new Point(temp.Position.X + 6, temp.Position.Y - 15);
+                flowLabel.Location = new Point(temp.Position.X + 6, temp.Position.Y - 15);
             flowLabel.ForeColor = Color.Black;
             switch (temp.GetType())
             {
@@ -520,7 +438,7 @@ namespace FlowSimulator
         private void textBox1_TextChanged(object sender, EventArgs e)//  flow
         {
             Component temp;
-           
+
             if ((temp = canvas.SelectComponent(mousepoint)) != null)
             {
                 if (textBox1.Text != "")
@@ -534,13 +452,9 @@ namespace FlowSimulator
 
             this.Refresh();
         }
-
-
-
-        private double percentage, remainingpercentage;
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
-           
+
             if ((selectedComponent = canvas.SelectComponent(mousepoint)) != null && selectedComponent is Splitter)
             {
                 percentage = trackBar1.Value;
@@ -549,19 +463,15 @@ namespace FlowSimulator
 
                 ((Splitter)selectedComponent).PercentageUp = percentage / 10;
                 ((Splitter)selectedComponent).PercentageDown = remainingpercentage / 10;
-              //  canvas.UpdateProperties(selectedComponent);
-                
+                //  canvas.UpdateProperties(selectedComponent);
+
 
 
             }
             selectedComponent = null;
             this.Refresh();
-            
-        }
-            
-        private int maxFlow, currentFlow;
-       
 
+        }
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //panel5.Enabled = true;
@@ -569,7 +479,7 @@ namespace FlowSimulator
             //currentFlow = 0;
             //if ((selectedComponent = canvas.SelectComponent(mousepoint)) != null)
 
-               
+
             //        currentFlow = Convert.ToInt32(textBox1.Text);
             //        maxFlow = Convert.ToInt32(textBox2.Text);
             //        if (currentFlow <= maxFlow)
@@ -585,123 +495,112 @@ namespace FlowSimulator
             //            tooltip.Show("current flow cannot be higher than the maximum flow.", win, Cursor.Position);
             //        }
 
-                }
+        }
         private void HelpButton_Click(object sender, EventArgs e)
         {
             Help help = new Help();
             help.ShowDialog();
         }
-
         private void btnPump_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Pump: Initiates the flow", win, mousepoint);
         }
-
-        private void btnSink_MouseHover(object sender, EventArgs e)
+         private void btnSink_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Sink: Collects the flow", win, mousepoint);
         }
-
         private void btnSplitter_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Splitter: Splits the flow", win, mousepoint);
         }
-
         private void btnMerger_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Merger: Merges the flow", win, mousepoint);
         }
-
         private void btnPipe_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Pipe: Establishes a connection", win, mousepoint);
         }
-
         private void panel2_MouseHover(object sender, EventArgs e)
         {
             tooltip.RemoveAll();
         }
-
-     
-
         private void NewButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Create a new flow network diagram", win, mousepoint);
         }
-
         private void OpenButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Open an existing flow network diagram", win, mousepoint);
         }
-
         private void SaveButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Save a flow network diagram", win, mousepoint);
         }
-
         private void UndoButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Undo an action", win, mousepoint);
         }
-
         private void RedoButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Redo an action", win, mousepoint);
         }
-
         private void DeleteAllButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Delete all components on the drawing area", win, mousepoint);
         }
-
         private void HelpButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
             tooltip.Show("Help", win, mousepoint);
         }
-
         private void panel1_MouseHover(object sender, EventArgs e)
         {
             tooltip.RemoveAll();
         }
-
         private void panel4_MouseHover(object sender, EventArgs e)
         {
             tooltip.RemoveAll();
         }
+        private void DeleteAllButton_Click(object sender, EventArgs e)
+        {
+            if (canvas.Components.Count > 0)
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete your diagram? This action cannot be reverted.", "Delete All", MessageBoxButtons.YesNo);
 
+                if (dialogResult == DialogResult.Yes)
+                {
+                    canvas.DeleteAll();
+                    this.Refresh();
 
-              
-        
-
+                }
+            }
 
         }
-              
-        
 
+    }
+   }
 
-        }
-    

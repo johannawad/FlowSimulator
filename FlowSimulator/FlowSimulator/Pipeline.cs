@@ -32,67 +32,14 @@ namespace FlowSimulator
             }
         }
 
-
-        public int _selectedOutPut { get; set; }
-        public int _selectedOutPut2 { get; set; }
         public Pipeline(Component InPut, Component OutPut)
         {
             this.InPut = InPut;
             this.OutPut = OutPut;
             SafetyLimit = 5;
-            /* if (InPut.GetType() == typeof(Splitter))
-             {
-                 if (InPut.OutPutUp != null && InPut.OutPutDown == null)
-                 {
-                     this.CurrentFlow = InPut.OutPutUp.CurrentFlow;
-                 }
-                 else this.CurrentFlow = InPut.OutPutDown.CurrentFlow;
-             }
-             else
-             { this.CurrentFlow = InPut.CurrentFlow; }
-             */
+
         }
-        /*  public Pipeline(Component c1, Component c2, int selectedOutPut)
-          {
-              this.InPut = c1;
-              this.OutPut = c2;
-              this.Capacity = 10;
-              _selectedOutPut = selectedOutPut;
 
-              if (c1.GetType() == typeof(Splitter))
-              {
-                  if (c1.OutPutUp != null && c1.OutPutDown == null)
-                  {
-                      this.CurrentFlow = c1.OutPutUp.CurrentFlow;
-                  }
-                  else this.CurrentFlow = c1.OutPutDown.CurrentFlow;
-              }
-              else
-              { this.CurrentFlow = c1.CurrentFlow; }
-          }
-          public Pipeline(Component c1, Component c2, int selectedOutPut, int selectedOutPut2)
-          {
-              this.InPut = c1;
-              this.OutPut = c2;
-              this.Capacity = 10;
-              _selectedOutPut = selectedOutPut;
-              _selectedOutPut2 = selectedOutPut2;
-
-              if (c1.GetType() == typeof(Splitter))
-              {
-                  if (c1.OutPutUp != null && c1.OutPutDown == null)
-                  {
-                      this.CurrentFlow = c1.OutPutUp.CurrentFlow;
-                  }
-                  else this.CurrentFlow = c1.OutPutDown.CurrentFlow;
-              }
-              else
-              { this.CurrentFlow = c1.CurrentFlow; }
-
-            //  this.AssignInPutPoint();
-             // this.AssignOutPutPoint();
-          }
-          */
         /// <summary>
         /// first point of the connection
         /// </summary>
@@ -121,13 +68,13 @@ namespace FlowSimulator
                         switch (((Part)InPut).WhichPort(this))
                         {
                             case Part.Port.InPutUp:
-                                return new Point(InPut.Position.X , InPut.Position.Y + 10);
+                                return new Point(InPut.Position.X, InPut.Position.Y + 10);
 
                             case Part.Port.InPutDown:
                                 return new Point(InPut.Position.X, InPut.Position.Y + 30);
-                             
+
                             case Part.Port.OutPut:
-                                 return new Point(InPut.Position.X + 40, InPut.Position.Y + 20);
+                                return new Point(InPut.Position.X + 40, InPut.Position.Y + 20);
                         }
                         break;
                     case ComponentType.Sink:
@@ -138,12 +85,13 @@ namespace FlowSimulator
 
             }
         }
+        /// <summary>
+        /// The end point of the connection
+        /// </summary>
         public Point OutPutPoint
         {
             get
             {
-
-
                 switch (OutPut.GetType())
                 {
 

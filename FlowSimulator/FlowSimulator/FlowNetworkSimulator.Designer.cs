@@ -138,6 +138,7 @@
             this.DeleteAllButton.Size = new System.Drawing.Size(30, 29);
             this.DeleteAllButton.TabIndex = 5;
             this.DeleteAllButton.TabStop = false;
+            this.DeleteAllButton.Click += new System.EventHandler(this.DeleteAllButton_Click);
             this.DeleteAllButton.MouseHover += new System.EventHandler(this.DeleteAllButton_MouseHover);
             // 
             // UndoButton
@@ -160,7 +161,6 @@
             this.SaveButton.Size = new System.Drawing.Size(32, 29);
             this.SaveButton.TabIndex = 3;
             this.SaveButton.TabStop = false;
-            this.SaveButton.Click += new System.EventHandler(this.pictureBox3_Click);
             this.SaveButton.MouseHover += new System.EventHandler(this.SaveButton_MouseHover);
             // 
             // OpenButton
@@ -171,6 +171,7 @@
             this.OpenButton.Size = new System.Drawing.Size(40, 29);
             this.OpenButton.TabIndex = 2;
             this.OpenButton.TabStop = false;
+            this.OpenButton.MouseHover += new System.EventHandler(this.SaveButton_MouseHover);
             // 
             // NewButton
             // 
@@ -180,7 +181,7 @@
             this.NewButton.Size = new System.Drawing.Size(34, 29);
             this.NewButton.TabIndex = 2;
             this.NewButton.TabStop = false;
-            this.NewButton.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.NewButton.MouseHover += new System.EventHandler(this.NewButton_MouseHover);
             // 
             // panel2
             // 
@@ -266,7 +267,6 @@
             this.label1.Size = new System.Drawing.Size(88, 19);
             this.label1.TabIndex = 2;
             this.label1.Text = "Components";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // panel4
             // 
@@ -288,7 +288,6 @@
             this.label2.Size = new System.Drawing.Size(80, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "NetworkName";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // panel5
             // 

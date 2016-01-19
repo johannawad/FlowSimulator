@@ -15,13 +15,8 @@ namespace FlowSimulator
         /// </summary>
         public string Filename
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+            get;
+            set;
         }
     
         /// <summary>

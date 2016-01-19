@@ -14,7 +14,7 @@ namespace FlowSimulator
     
     public abstract class Component : ICloneable
     {
-
+        //current flow through the component
         protected double currentflow;
         public Component InPut { get; set; }
         public Component InPutUp { get; set; }
@@ -57,6 +57,7 @@ namespace FlowSimulator
             get { return selectionArea; }
             set { selectionArea = value; }
         }
+
         public Point Position
         {
             get { return position; }
@@ -64,22 +65,6 @@ namespace FlowSimulator
             set { position = value; }
 
         }
-        /// <summary>
-        /// The maximum flow through the component
-        /// </summary>
-
-
-        /// <summary>
-        /// The current flow through the component
-        /// </summary>
-
-
-
-
-        ///To know what type of component it is
-       
-        /// <summary>
-        /// you use this method incase you need to write a lot of if else statements
         /// </summary>
         /// <param name="c">The Component you want to get the type of</param>
         /// <returns>it returns an enum ComponentType that you can use in an switch case</returns>
@@ -106,7 +91,7 @@ namespace FlowSimulator
         }
 
 
-        //Iclonable
+        //Icloneable
         public object Clone()
         {
             return this.MemberwiseClone();
