@@ -9,6 +9,7 @@ using System.Diagnostics;
 
 namespace FlowSimulator
 {
+    [Serializable()]
     /// <summary>
     /// This class contains the methods for the drawing area(canvas) and when a new component is drawn, it will be added to a list in this class.
     /// </summary>

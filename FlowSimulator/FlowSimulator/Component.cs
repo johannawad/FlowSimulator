@@ -8,6 +8,7 @@ using System.Reflection.Emit;
 
 namespace FlowSimulator
 {
+    [Serializable()]
     /// <summary>
     /// An abstract class which the various types of components inherit from
     /// </summary>
@@ -22,6 +23,7 @@ namespace FlowSimulator
         public Component OutPutUp { get; set; }
         public Component OutPutDown { get; set; }
         public Component OutPut { get; set; }
+        public bool visible = true;
         
         public abstract double CurrentFlow
         {

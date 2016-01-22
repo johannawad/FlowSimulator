@@ -6,8 +6,10 @@ using System.Drawing;
 
 namespace FlowSimulator
 {
+        [Serializable()]
     public class Sink : Part
     {
+
         
         /// <summary>
         /// The pipeline connected to the node of this pump

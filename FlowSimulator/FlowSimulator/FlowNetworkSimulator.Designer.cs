@@ -161,6 +161,7 @@
             this.SaveButton.Size = new System.Drawing.Size(32, 29);
             this.SaveButton.TabIndex = 3;
             this.SaveButton.TabStop = false;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             this.SaveButton.MouseHover += new System.EventHandler(this.SaveButton_MouseHover);
             // 
             // OpenButton
@@ -171,7 +172,8 @@
             this.OpenButton.Size = new System.Drawing.Size(40, 29);
             this.OpenButton.TabIndex = 2;
             this.OpenButton.TabStop = false;
-            this.OpenButton.MouseHover += new System.EventHandler(this.SaveButton_MouseHover);
+            this.OpenButton.Click += new System.EventHandler(this.OpenButton_Click);
+            this.OpenButton.MouseHover += new System.EventHandler(this.OpenButton_MouseHover);
             // 
             // NewButton
             // 

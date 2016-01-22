@@ -6,7 +6,7 @@ using System.Drawing;
 using FlowSimulator.Properties;
 namespace FlowSimulator
 {
-
+    [Serializable()]
     public class Pipeline : Component
     {
 

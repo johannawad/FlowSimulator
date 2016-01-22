@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace FlowSimulator
 {
-
+    [Serializable()]
     public partial class FlowNetworkSimulator : Form
     {
 
@@ -25,9 +25,10 @@ namespace FlowSimulator
         private bool compIsMoving = false, isOccupied = false, isSelected = false, addNewPipeline = false, connectedComp1 = false, wireIsSelected = false;
         Point first, second, third;
         Pipeline selectedPipeline, p;
-        private bool propertiesSet = true;
+        private bool propertiesSet = true, saved = false;
         private double percentage, remainingpercentage;
         private int maxFlow, currentFlow;
+        FileHelper fh = new FileHelper();
         public FlowNetworkSimulator()
         {
             InitializeComponent();
@@ -35,6 +36,7 @@ namespace FlowSimulator
             canvas = new Canvas();
             area = new Rectangle(new Point(120, 95), new Size(550, 380));
             label8.Text = "Upper flow: " + 50 + "\n" + "Lower flow: " + 50;
+            
 
         }
 
@@ -57,6 +59,7 @@ namespace FlowSimulator
                     if (selectedComponent.SelectionArea.IntersectsWith(comp.SelectionArea))
                     {
                         oldCoordinates = comp.Position;
+                        canvas.CreateUndo(ActionType.Move, comp);
                         canvas.Components.Remove(comp);
                         break;
                     }
@@ -110,9 +113,13 @@ namespace FlowSimulator
 
                     selectedComponent.Position = new Point(mousepoint.X, mousepoint.Y);
                     selectedComponent.UpdateSelectionArea();
-
                     canvas.CreateComponent(selectedComponent);
-                    canvas.CreateUndo(ActionType.Create, selectedComponent);
+                    if (!compIsMoving)
+                    {
+                        canvas.CreateUndo(ActionType.Create, selectedComponent);
+                        
+                    }
+                    
                     UndoButton.Enabled = true;
                     selectedComponent = null;
                     compIsMoving = false;
@@ -258,6 +265,7 @@ namespace FlowSimulator
         {
             try
             {
+                label2.Text = fh.Filename;
                 Graphics gr = e.Graphics;
                 if (canvas.Components != null)
                 {
@@ -599,6 +607,38 @@ namespace FlowSimulator
                 }
             }
 
+        }
+
+        private void OpenButton_Click(object sender, EventArgs e)
+        {
+            if (canvas.Components.Count() == 0)
+            {
+                canvas = fh.LoadFromFile();
+            }
+            else
+            {
+                if (!saved)
+                {
+                    DialogResult dr = MessageBox.Show("Do you want to save the current diagram before opening?", "Save As", MessageBoxButtons.YesNo);
+                    if (dr.ToString() == "Yes")
+                    {
+                        fh.SaveToFile(canvas);
+                    }
+                    canvas = fh.LoadFromFile();
+                }
+
+            }
+            this.Refresh();
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+
+            if (canvas.Components.Count() != 0)
+            {
+                fh.SaveToFile(canvas);
+            }
+            else { MessageBox.Show("The plain is emty"); }
         }
 
     }

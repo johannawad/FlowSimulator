@@ -6,6 +6,7 @@ using System.Drawing;
 
 namespace FlowSimulator
 {
+        [Serializable()]
     public class Splitter : Part
     {
         

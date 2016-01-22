@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlowSimulator
 {
+    [Serializable()]
     public enum ComponentType
     {
         Pipeline, Pump, Splitter, Merger, Sink,

@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace FlowSimulator
 {
+   [Serializable()]
    public abstract class Part :Component
     {
         //everything that was in component and was only used by the parts is now in parts

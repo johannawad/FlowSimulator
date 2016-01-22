@@ -6,6 +6,7 @@ using System.Drawing;
 
 namespace FlowSimulator
 {
+      [Serializable()]
     /// <summary>
     /// A class to store actions such as adding/removing a component
     /// </summary>
