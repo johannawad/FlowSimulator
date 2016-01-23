@@ -183,6 +183,7 @@
             this.NewButton.Size = new System.Drawing.Size(34, 29);
             this.NewButton.TabIndex = 2;
             this.NewButton.TabStop = false;
+            this.NewButton.Click += new System.EventHandler(this.NewButton_Click);
             this.NewButton.MouseHover += new System.EventHandler(this.NewButton_MouseHover);
             // 
             // panel2
@@ -415,13 +416,6 @@
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // propertiesToolStripMenuItem
-            // 
-            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.propertiesToolStripMenuItem.Text = "Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
-            // 
             // cmsEditPipeline
             // 
             this.cmsEditPipeline.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -442,9 +436,8 @@
             this.flowLabel.AutoSize = true;
             this.flowLabel.Location = new System.Drawing.Point(0, 0);
             this.flowLabel.Name = "flowLabel";
-            this.flowLabel.Size = new System.Drawing.Size(35, 13);
+            this.flowLabel.Size = new System.Drawing.Size(0, 13);
             this.flowLabel.TabIndex = 5;
-            this.flowLabel.Text = "label7";
             // 
             // FlowNetworkSimulator
             // 
@@ -459,9 +452,12 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(826, 544);
+            this.MinimumSize = new System.Drawing.Size(826, 544);
             this.Name = "FlowNetworkSimulator";
             this.Text = "Flow Simulator";
-            this.Load += new System.EventHandler(this.FlowNetworkSimulator_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FlowNetworkSimulator_FormClosing);
+
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FlowNetworkSimulator_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FlowNetworkSimulator_MouseClick);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FlowNetworkSimulator_MouseMove);

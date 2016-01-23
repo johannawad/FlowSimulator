@@ -19,6 +19,7 @@ namespace FlowSimulator
         BinaryFormatter bf;
         private SaveFileDialog saveCanvas = new SaveFileDialog();
         private OpenFileDialog openCanvas = new OpenFileDialog();
+        public bool saved = false;
         /// <summary>
         /// The name of the file to be opened or saved
         /// </summary>
@@ -31,17 +32,19 @@ namespace FlowSimulator
         /// <summary>
         /// To save the components on a canvas and its properties to file
         /// </summary>
-        public bool SaveToFile(Canvas canvas)
+        public void SaveToFile(Canvas canvas)
         {
             bf = null;
             fs = null;
+            if(!saved)
+            { 
                 saveCanvas.FileName = "UntitledCanvas.cnv";
                 saveCanvas.Filter = "Canvas file(*.cnv)|*.cnv";
-                Filename = saveCanvas.FileName;
                 DialogResult dr = saveCanvas.ShowDialog();
+                Filename = saveCanvas.FileName;
                 if (saveCanvas.FileName != "*.cnv")
                 {
-                    
+
                     try
                     {
 
@@ -50,7 +53,7 @@ namespace FlowSimulator
                             fs = new FileStream(saveCanvas.FileName, FileMode.Create, FileAccess.Write);
                             bf = new BinaryFormatter();
                             bf.Serialize(fs, canvas);
-                            return true;
+                            saved = true;
                         }
                     }
                     catch (SerializationException)
@@ -60,9 +63,9 @@ namespace FlowSimulator
                     {
                         if (fs != null) fs.Close();
                     }
-                
+                }
             }
-            return false;
+            
         }
 
         /// <summary>
@@ -91,7 +94,9 @@ namespace FlowSimulator
             {
                 if (fs != null) fs.Close();
             }
+            saved = true;
             return null;
+           
         }
     }
 }

@@ -25,7 +25,7 @@ namespace FlowSimulator
         private bool compIsMoving = false, isOccupied = false, isSelected = false, addNewPipeline = false, connectedComp1 = false, wireIsSelected = false;
         Point first, second, third;
         Pipeline selectedPipeline, p;
-        private bool propertiesSet = true, saved = false;
+        private bool propertiesSet = true;
         private double percentage, remainingpercentage;
         private int maxFlow, currentFlow;
         FileHelper fh = new FileHelper();
@@ -36,7 +36,7 @@ namespace FlowSimulator
             canvas = new Canvas();
             area = new Rectangle(new Point(120, 95), new Size(550, 380));
             label8.Text = "Upper flow: " + 50 + "\n" + "Lower flow: " + 50;
-            
+
 
         }
 
@@ -44,11 +44,8 @@ namespace FlowSimulator
         {
             selectedComponent = new Pump(new Point(0, 0));
         }
-        
-        private void FlowNetworkSimulator_Load(object sender, EventArgs e)
-        {
 
-        }
+
 
         private void moveToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -103,7 +100,7 @@ namespace FlowSimulator
 
 
                     }
-
+                    fh.saved = false;
                     this.Refresh();
 
 
@@ -117,13 +114,13 @@ namespace FlowSimulator
                     if (!compIsMoving)
                     {
                         canvas.CreateUndo(ActionType.Create, selectedComponent);
-                        
+
                     }
-                    
+
                     UndoButton.Enabled = true;
                     selectedComponent = null;
                     compIsMoving = false;
-
+                    fh.saved = false;
                     this.Refresh();
                     this.Cursor = Cursors.Arrow;
                 }
@@ -142,6 +139,7 @@ namespace FlowSimulator
                         // if(selectedComponent)
                         canvas.CreateComponent(selectedComponent);
                         compIsMoving = false;
+                        fh.saved = false;
                         this.Refresh();
                     }
 
@@ -168,7 +166,7 @@ namespace FlowSimulator
                             addNewPipeline = false;
 
 
-
+                            fh.saved = false;
                             this.Refresh();
                             this.Cursor = Cursors.Arrow;
                         }
@@ -176,6 +174,7 @@ namespace FlowSimulator
                         {
                             tooltip.Show("Unable to establish a connection", win, Cursor.Position);
                             connectedComp1 = false;
+                            fh.saved = false;
                             this.Cursor = Cursors.Arrow;
                             this.Refresh();
                         }
@@ -207,7 +206,7 @@ namespace FlowSimulator
                 {
                     isSelected = false;
                 }
-
+                fh.saved = false;
                 this.Refresh();
             }
 
@@ -215,6 +214,7 @@ namespace FlowSimulator
             {
                 Component temp = canvas.SelectComponent(mousepoint);
                 UpdateFlowLabel(temp);
+                fh.saved = false;
 
 
             }
@@ -222,9 +222,11 @@ namespace FlowSimulator
             {
 
                 UpdateFlowLabel(selectedPipeline);
+                fh.saved = false;
             }
+
         }
-        
+
         private void FlowNetworkSimulator_MouseMove(object sender, MouseEventArgs e)
         {
             try
@@ -323,7 +325,7 @@ namespace FlowSimulator
         {
             selectedComponent = new Merger(new Point(0, 0));
         }
-        
+
         private void UndoButton_Click(object sender, EventArgs e)
         {
             canvas.UndoLastAction();
@@ -480,30 +482,7 @@ namespace FlowSimulator
             this.Refresh();
 
         }
-        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //panel5.Enabled = true;
-            //maxFlow = 0;
-            //currentFlow = 0;
-            //if ((selectedComponent = canvas.SelectComponent(mousepoint)) != null)
 
-
-            //        currentFlow = Convert.ToInt32(textBox1.Text);
-            //        maxFlow = Convert.ToInt32(textBox2.Text);
-            //        if (currentFlow <= maxFlow)
-            //        {
-
-            //            selectedComponent.CurrentFlow = currentFlow;
-            //            selectedComponent.Capacity = maxFlow;
-
-            //        }
-            //        else
-            //        {
-            //            IWin32Window win = this;
-            //            tooltip.Show("current flow cannot be higher than the maximum flow.", win, Cursor.Position);
-            //        }
-
-        }
         private void HelpButton_Click(object sender, EventArgs e)
         {
             Help help = new Help();
@@ -513,31 +492,31 @@ namespace FlowSimulator
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Pump: Initiates the flow", win, mousepoint);
+            tooltip.Show("Pump: Initiates the flow", win, mousepoint, 600);
         }
-         private void btnSink_MouseHover(object sender, EventArgs e)
+        private void btnSink_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Sink: Collects the flow", win, mousepoint);
+            tooltip.Show("Sink: Collects the flow", win, mousepoint, 600);
         }
         private void btnSplitter_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Splitter: Splits the flow", win, mousepoint);
+            tooltip.Show("Splitter: Splits the flow", win, mousepoint, 600);
         }
         private void btnMerger_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Merger: Merges the flow", win, mousepoint);
+            tooltip.Show("Merger: Merges the flow", win, mousepoint, 600);
         }
         private void btnPipe_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Pipe: Establishes a connection", win, mousepoint);
+            tooltip.Show("Pipe: Establishes a connection", win, mousepoint, 600);
         }
         private void panel2_MouseHover(object sender, EventArgs e)
         {
@@ -547,43 +526,43 @@ namespace FlowSimulator
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Create a new flow network diagram", win, mousepoint);
+            tooltip.Show("New", win, mousepoint, 400);
         }
         private void OpenButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Open an existing flow network diagram", win, mousepoint);
+            tooltip.Show("Open", win, mousepoint, 400);
         }
         private void SaveButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Save a flow network diagram", win, mousepoint);
+            tooltip.Show("Save", win, mousepoint, 400);
         }
         private void UndoButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Undo an action", win, mousepoint);
+            tooltip.Show("Undo", win, mousepoint, 400);
         }
         private void RedoButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Redo an action", win, mousepoint);
+            tooltip.Show("Redo", win, mousepoint, 400);
         }
         private void DeleteAllButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Delete all components on the drawing area", win, mousepoint);
+            tooltip.Show("Delete all", win, mousepoint, 400);
         }
         private void HelpButton_MouseHover(object sender, EventArgs e)
         {
             IWin32Window win = this;
             Point mousepoint = PointToClient(Cursor.Position);
-            tooltip.Show("Help", win, mousepoint);
+            tooltip.Show("Help", win, mousepoint, 400);
         }
         private void panel1_MouseHover(object sender, EventArgs e)
         {
@@ -617,12 +596,13 @@ namespace FlowSimulator
             }
             else
             {
-                if (!saved)
+                if (!fh.saved)
                 {
                     DialogResult dr = MessageBox.Show("Do you want to save the current diagram before opening?", "Save As", MessageBoxButtons.YesNo);
                     if (dr.ToString() == "Yes")
                     {
                         fh.SaveToFile(canvas);
+                        fh.saved = true;
                     }
                     canvas = fh.LoadFromFile();
                 }
@@ -638,9 +618,51 @@ namespace FlowSimulator
             {
                 fh.SaveToFile(canvas);
             }
-            else { MessageBox.Show("The plain is emty"); }
+            else { MessageBox.Show("There are no components on the drawing area"); }
+            this.Refresh();
         }
 
+        private void NewButton_Click(object sender, EventArgs e)
+        {
+            if (!(canvas.Components.Count() == 0))
+            {
+                DialogResult dr = MessageBox.Show("Do you want to save the current diagram before opening?", "Save As", MessageBoxButtons.YesNo);
+                if (dr.ToString() == "Yes")
+                {
+                    fh.SaveToFile(canvas);
+
+                }
+                canvas = new Canvas();
+
+                this.Refresh();
+            }
+            this.Refresh();
+        }
+        /// <summary>
+        /// Closes only if the drawing area is empty
+        /// </summary>
+        private void FlowNetworkSimulator_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+
+                if (canvas.Components.Count() != 0 && !fh.saved)
+                {
+                    DialogResult dr = MessageBox.Show("Do you want to save the current diagram before quitting?", "Save As", MessageBoxButtons.YesNo);
+                    if (dr.ToString() == "Yes")
+                    {
+                        fh.SaveToFile(canvas);
+
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+
     }
-   }
+}
 
