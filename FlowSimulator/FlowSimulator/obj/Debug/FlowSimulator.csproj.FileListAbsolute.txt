@@ -109,3 +109,11 @@ C:\Users\Johanna\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug
 D:\SCHOOL\OOD\OOD2-GROUP-B\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.Help.resources
 C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\bin\Debug\FlowSimulator.exe.config
 C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.pdb
+C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\bin\Debug\FlowSimulator.exe
+C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\bin\Debug\FlowSimulator.pdb
+C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.csprojResolveAssemblyReference.cache
+C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.FlowNetworkSimulator.resources
+C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.Help.resources
+C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.Properties.Resources.resources
+C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.csproj.GenerateResource.Cache
+C:\Users\Habon\Documents\GitHub\chhahajo\FlowSimulator\FlowSimulator\obj\Debug\FlowSimulator.exe

@@ -37,7 +37,15 @@ namespace FlowSimulator
             canvas = new Canvas();
             area = new Rectangle(new Point(120, 95), new Size(550, 380));
             label8.Text = "Upper flow: " + 50 + "\n" + "Lower flow: " + 50;
-
+            if (canvas.Components.Count == 0)
+            {
+                flowLabel.Enabled = false;
+            }
+            else
+            {
+                flowLabel.Enabled = true;
+                
+            }
 
         }
 
@@ -602,11 +610,16 @@ namespace FlowSimulator
             {
                 if (!fh.saved)
                 {
-                    DialogResult dr = MessageBox.Show("Do you want to save the current diagram before opening?", "Save As", MessageBoxButtons.YesNo);
+                    DialogResult dr = MessageBox.Show("Do you want to save the current diagram before opening?", "Save As", MessageBoxButtons.YesNoCancel);
                     if (dr.ToString() == "Yes")
                     {
                         fh.SaveToFile(canvas);
                         fh.saved = true;
+                    }
+                    if (dr == DialogResult.Cancel || dr == DialogResult.No)
+                    {
+
+                        return;
                     }
                     canvas = fh.LoadFromFile();
                 }
