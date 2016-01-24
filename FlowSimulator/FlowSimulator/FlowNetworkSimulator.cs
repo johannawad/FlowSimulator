@@ -610,18 +610,21 @@ namespace FlowSimulator
             {
                 if (!fh.saved)
                 {
-                    DialogResult dr = MessageBox.Show("Do you want to save the current diagram before opening?", "Save As", MessageBoxButtons.YesNoCancel);
-                    if (dr.ToString() == "Yes")
+                    DialogResult dr = MessageBox.Show("Do you want to save the current diagram before opening?",
+                        "Save As", MessageBoxButtons.YesNoCancel);
+                    if (dr == DialogResult.Yes)
                     {
                         fh.SaveToFile(canvas);
                         fh.saved = true;
                     }
-                    if (dr == DialogResult.Cancel || dr == DialogResult.No)
+                    if (dr == DialogResult.Cancel)
                     {
-
                         return;
                     }
-                    canvas = fh.LoadFromFile();
+                    if (dr == DialogResult.No)
+                    {
+                        canvas = fh.LoadFromFile();
+                    }
                 }
 
             }
