@@ -272,8 +272,15 @@ namespace FlowSimulator
         /// <param name="comp">reference to the component</param>
         public void CreateUndo(ActionType ActType, Component comp)
         {
-            if (UndoRedoIndex + 1 < UndoRedoList.Count)
-            { UndoRedoList.RemoveAt(UndoRedoIndex + 1); }
+             
+            if (( UndoRedoIndex + 2 <= UndoRedoList.Count))
+            {
+                if (UndoRedoIndex <0)
+                UndoRedoList.RemoveRange(UndoRedoIndex + 1, UndoRedoList.Count);
+                else
+                UndoRedoList.RemoveRange((UndoRedoIndex  + 1 ), (UndoRedoList.Count - (UndoRedoIndex + 1)));
+            }
+            
             UndoRedoList.Add(new Action(ActType, comp));
             UndoRedoIndex++;
            

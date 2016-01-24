@@ -21,6 +21,9 @@ namespace FlowSimulator
         /// </summary>
         public double PercentageDown { get; set; }
 
+        /// <summary>
+        /// it gets the CurrentFlow from the input Component
+        /// </summary>
         public override double CurrentFlow
         {
             get
@@ -64,7 +67,7 @@ namespace FlowSimulator
         }
 
         /// <summary>
-        /// To establish a connection
+        /// To establish a connection to a free input output in order of first input then output
         /// </summary>
         /// <returns></returns>
         public override void Connect(Pipeline pipeline)

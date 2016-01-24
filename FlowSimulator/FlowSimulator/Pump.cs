@@ -11,10 +11,7 @@ namespace FlowSimulator
         
     {
         private double capacity;
-        /// <summary>
-        /// The pipeline connected to the node of this pump
-        /// </summary>
-        public bool PipelineConnected = false;
+        
         /// <summary>
         /// the capacity that is not allowed to be smaller than the CurrentFLow
         /// </summary>
@@ -33,7 +30,7 @@ namespace FlowSimulator
             }
         }
         /// <summary>
-        /// establishes a connection
+        /// To establish a connection to the output
         /// </summary>
         /// <param name="pipeline"></param>
         /// <returns></returns>
@@ -56,6 +53,10 @@ namespace FlowSimulator
         }
         public bool Input { get; set; }
 
+
+        /// <summary>
+        /// it gets it's Currentflow from the one that's stored and sets one that is in range of 0 - capacity
+        /// </summary>
         public override double CurrentFlow
         {
             get

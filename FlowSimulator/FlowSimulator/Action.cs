@@ -64,11 +64,11 @@ namespace FlowSimulator
         public Action(ActionType Act, Component comp )
         {
             this.ActionType = Act;
-            if (Act.Equals(1))
+            if ( Act == ActionType.Move)
             {
-                this.Position = comp.Position;
+                Position = new Point(comp.Position.X, comp.Position.Y);
             }
-            if (Act.Equals(2))
+            if (Act == ActionType.Delete)
             {
                 this.Component = (Component) comp.Clone();
             }

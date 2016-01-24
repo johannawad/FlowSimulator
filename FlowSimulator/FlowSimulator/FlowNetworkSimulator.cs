@@ -25,6 +25,7 @@ namespace FlowSimulator
         private bool compIsMoving = false, isOccupied = false, isSelected = false, addNewPipeline = false, connectedComp1 = false, wireIsSelected = false;
         Point first, second, third;
         Pipeline selectedPipeline, p;
+        private ActionType action;
         private bool propertiesSet = true;
         private double percentage, remainingpercentage;
         private int maxFlow, currentFlow;
@@ -43,6 +44,7 @@ namespace FlowSimulator
         private void btnPump_Click(object sender, EventArgs e)
         {
             selectedComponent = new Pump(new Point(0, 0));
+            action = ActionType.Create;
         }
 
 
@@ -56,7 +58,7 @@ namespace FlowSimulator
                     if (selectedComponent.SelectionArea.IntersectsWith(comp.SelectionArea))
                     {
                         oldCoordinates = comp.Position;
-                        canvas.CreateUndo(ActionType.Move, comp);
+                        canvas.CreateUndo(ActionType.Move, selectedComponent);
                         canvas.Components.Remove(comp);
                         break;
                     }
@@ -107,16 +109,11 @@ namespace FlowSimulator
                 }
                 if (selectedComponent != null && !canvas.IsOverlapping(selectedComponent.SelectionArea) && area.IntersectsWith(new Rectangle(mousepoint, new Size(40, 40))))
                 {
-
                     selectedComponent.Position = new Point(mousepoint.X, mousepoint.Y);
                     selectedComponent.UpdateSelectionArea();
                     canvas.CreateComponent(selectedComponent);
-                    if (!compIsMoving)
-                    {
-                        canvas.CreateUndo(ActionType.Create, selectedComponent);
-
-                    }
-
+                    if(!compIsMoving)
+                    canvas.CreateUndo(ActionType.Create, selectedComponent);
                     UndoButton.Enabled = true;
                     selectedComponent = null;
                     compIsMoving = false;
@@ -129,11 +126,12 @@ namespace FlowSimulator
 
                 if (selectedComponent != null && canvas.IsOverlapping(selectedComponent.SelectionArea) || !area.IntersectsWith(new Rectangle(mousepoint, new Size(40, 40))))
                 {
-                    canvas.CreateUndo(ActionType.Move, selectedComponent);
+                    
                     UndoButton.Enabled = true;
                     if (compIsMoving)
                     {
-
+                        canvas.UndoRedoList.RemoveAt(canvas.UndoRedoIndex);
+                        canvas.UndoRedoIndex--;
                         selectedComponent.Position = oldCoordinates;
                         selectedComponent.UpdateSelectionArea();
                         // if(selectedComponent)
@@ -234,6 +232,7 @@ namespace FlowSimulator
                 if (selectedComponent != null)
                 {
                     Point mouseClick = this.PointToClient(Cursor.Position);
+                   
                     selectedComponent.Position = new Point(mouseClick.X, mouseClick.Y);
                     selectedComponent.UpdateSelectionArea();
                     Rectangle tempRec = new Rectangle(mouseClick, new Size(40, 40));
@@ -314,16 +313,19 @@ namespace FlowSimulator
         private void btnSink_Click(object sender, EventArgs e)
         {
             selectedComponent = new Sink(new Point(0, 0));
+            action = ActionType.Create;
         }
 
         private void btnSplitter_Click(object sender, EventArgs e)
         {
             selectedComponent = new Splitter(new Point(0, 0));
+            action = ActionType.Create;
         }
 
         private void btnMerger_Click(object sender, EventArgs e)
         {
             selectedComponent = new Merger(new Point(0, 0));
+            action = ActionType.Create;
         }
 
         private void UndoButton_Click(object sender, EventArgs e)
@@ -364,7 +366,9 @@ namespace FlowSimulator
             {
                 this.Cursor = Cursors.Cross;
                 addNewPipeline = true;
+                action = ActionType.Create;
             }
+           
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)

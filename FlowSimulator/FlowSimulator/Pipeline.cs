@@ -120,7 +120,9 @@ namespace FlowSimulator
 
             }
         }
-
+        /// <summary>
+        /// it gets the CurrentFlow from the input Component
+        /// </summary>
         public override double CurrentFlow
         {
 

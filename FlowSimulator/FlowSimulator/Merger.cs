@@ -8,8 +8,10 @@ namespace FlowSimulator
 {
     [Serializable()]
     public class Merger : Part
-    {  
-        //current flow through the merfer
+    {
+        /// <summary>
+        /// it gets the CurrentFlow from the input Component
+        /// </summary>
         public override double CurrentFlow
         {
             get
@@ -32,9 +34,8 @@ namespace FlowSimulator
             }
         }
         /// <summary>
-        /// To establish a connection with a pipeline
+        /// To establish a connection to a free input or output, in the order of first input then output
         /// </summary>
-        /// <param name="edge"></param>
         public override void Connect(Pipeline pipeline) 
         {
             if (ReferenceEquals(InPutUp, null))

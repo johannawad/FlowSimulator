@@ -11,11 +11,11 @@ namespace FlowSimulator
     {
 
         
-        /// <summary>
-        /// The pipeline connected to the node of this pump
-        /// </summary>
-        public bool PipelineConnected = false;
+       
 
+        /// <summary>
+        /// it gets the CurrentFlow from the input Component
+        /// </summary>
         public override double CurrentFlow
         {
             get
@@ -35,7 +35,7 @@ namespace FlowSimulator
         }
 
         /// <summary>
-        /// establishes a connection
+        /// To establish a connection to the input
         /// </summary>
         /// <param name="pipeline"></param>
         /// <returns></returns>
